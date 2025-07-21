@@ -93,5 +93,40 @@
     "date": "2025-07-15",
     "text": "understand seamless???",
     "completed": false
+  },
+  {
+    "date": "2025-07-21",
+    "text": "fix ui",
+    "completed": false
+  },
+  {
+    "date": "2025-07-21",
+    "text": "fix the double adding bug",
+    "completed": false
+  },
+  {
+    "date": "2025-07-21",
+    "text": "add some sort of time based thing to this app -",
+    "completed": false
+  },
+  {
+    "date": "2025-07-21",
+    "text": "add soem cozy rain fall focus part",
+    "completed": false
+  },
+  {
+    "date": "2025-07-21",
+    "text": "write tests - the most borign part",
+    "completed": false
+  },
+  {
+    "date": "2025-07-21",
+    "text": "improve highlight",
+    "completed": false
+  },
+  {
+    "date": "2025-07-21",
+    "text": "refactor the code to make more scaleable",
+    "completed": false
   }
 ]
