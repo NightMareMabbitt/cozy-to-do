@@ -90,14 +90,23 @@ class GoalManager:
   def import_last_week_goals(self):
     imported = []
     for g in self.get_incomplete_last_week_goals():
-        new_goal = {
+      if any(
+        existing["text"] == g["text"] 
+        and existing["date"] == self.today
+        and existing.get("imported_from") == g["date"]
+        for existing in self.goals
+      ):
+        continue
+
+      new_goal = {
           "text": g["text"],
           "date": self.today,
           "completed": False,
           "imported_from": g["date"]
-        }
-        self.goals.append(new_goal)
-        imported.append(new_goal)
+      }
+      self.goals.append(new_goal)
+      imported.append(new_goal)
+    
     self.save_goals()
     return imported      
        

@@ -142,6 +142,291 @@
   {
     "date": "2025-07-28",
     "text": "hello",
+    "completed": true
+  },
+  {
+    "text": "fix ui",
+    "date": "2025-07-28",
+    "completed": true,
+    "imported_from": "2025-07-21"
+  },
+  {
+    "text": "fix the double adding bug",
+    "date": "2025-07-28",
+    "completed": true,
+    "imported_from": "2025-07-21"
+  },
+  {
+    "text": "add some sort of time based thing to this app -",
+    "date": "2025-07-28",
+    "completed": true,
+    "imported_from": "2025-07-21"
+  },
+  {
+    "text": "add soem cozy rain fall focus part",
+    "date": "2025-07-28",
+    "completed": true,
+    "imported_from": "2025-07-21"
+  },
+  {
+    "text": "write tests - the most borign part",
+    "date": "2025-07-28",
+    "completed": true,
+    "imported_from": "2025-07-21"
+  },
+  {
+    "text": "improve highlight",
+    "date": "2025-07-28",
+    "completed": true,
+    "imported_from": "2025-07-21"
+  },
+  {
+    "text": "refactor the code to make more scaleable",
+    "date": "2025-07-28",
+    "completed": true,
+    "imported_from": "2025-07-21"
+  },
+  {
+    "text": "sort this app out",
+    "date": "2025-07-28",
+    "completed": true,
+    "imported_from": "2025-07-24"
+  },
+  {
+    "text": "make UI pretty",
+    "date": "2025-07-28",
+    "completed": true,
+    "imported_from": "2025-07-24"
+  },
+  {
+    "text": "fix ui",
+    "date": "2025-07-28",
+    "completed": true,
+    "imported_from": "2025-07-21"
+  },
+  {
+    "text": "fix the double adding bug",
+    "date": "2025-07-28",
+    "completed": true,
+    "imported_from": "2025-07-21"
+  },
+  {
+    "text": "add some sort of time based thing to this app -",
+    "date": "2025-07-28",
+    "completed": true,
+    "imported_from": "2025-07-21"
+  },
+  {
+    "text": "add soem cozy rain fall focus part",
+    "date": "2025-07-28",
+    "completed": true,
+    "imported_from": "2025-07-21"
+  },
+  {
+    "text": "write tests - the most borign part",
+    "date": "2025-07-28",
+    "completed": true,
+    "imported_from": "2025-07-21"
+  },
+  {
+    "text": "improve highlight",
+    "date": "2025-07-28",
+    "completed": true,
+    "imported_from": "2025-07-21"
+  },
+  {
+    "text": "refactor the code to make more scaleable",
+    "date": "2025-07-28",
+    "completed": true,
+    "imported_from": "2025-07-21"
+  },
+  {
+    "text": "sort this app out",
+    "date": "2025-07-28",
+    "completed": true,
+    "imported_from": "2025-07-24"
+  },
+  {
+    "text": "make UI pretty",
+    "date": "2025-07-28",
+    "completed": true,
+    "imported_from": "2025-07-24"
+  },
+  {
+    "text": "fix ui",
+    "date": "2025-07-28",
+    "completed": true,
+    "imported_from": "2025-07-21"
+  },
+  {
+    "text": "fix the double adding bug",
+    "date": "2025-07-28",
+    "completed": true,
+    "imported_from": "2025-07-21"
+  },
+  {
+    "text": "add some sort of time based thing to this app -",
+    "date": "2025-07-28",
+    "completed": true,
+    "imported_from": "2025-07-21"
+  },
+  {
+    "text": "add soem cozy rain fall focus part",
+    "date": "2025-07-28",
+    "completed": true,
+    "imported_from": "2025-07-21"
+  },
+  {
+    "text": "write tests - the most borign part",
+    "date": "2025-07-28",
+    "completed": true,
+    "imported_from": "2025-07-21"
+  },
+  {
+    "text": "improve highlight",
+    "date": "2025-07-28",
+    "completed": true,
+    "imported_from": "2025-07-21"
+  },
+  {
+    "text": "refactor the code to make more scaleable",
+    "date": "2025-07-28",
+    "completed": true,
+    "imported_from": "2025-07-21"
+  },
+  {
+    "text": "sort this app out",
+    "date": "2025-07-28",
+    "completed": true,
+    "imported_from": "2025-07-24"
+  },
+  {
+    "text": "make UI pretty",
+    "date": "2025-07-28",
+    "completed": true,
+    "imported_from": "2025-07-24"
+  },
+  {
+    "text": "fix ui",
+    "date": "2025-07-28",
+    "completed": true,
+    "imported_from": "2025-07-21"
+  },
+  {
+    "text": "fix the double adding bug",
+    "date": "2025-07-28",
+    "completed": true,
+    "imported_from": "2025-07-21"
+  },
+  {
+    "text": "add some sort of time based thing to this app -",
+    "date": "2025-07-28",
+    "completed": true,
+    "imported_from": "2025-07-21"
+  },
+  {
+    "text": "add soem cozy rain fall focus part",
+    "date": "2025-07-28",
+    "completed": true,
+    "imported_from": "2025-07-21"
+  },
+  {
+    "text": "write tests - the most borign part",
+    "date": "2025-07-28",
+    "completed": true,
+    "imported_from": "2025-07-21"
+  },
+  {
+    "text": "improve highlight",
+    "date": "2025-07-28",
+    "completed": true,
+    "imported_from": "2025-07-21"
+  },
+  {
+    "text": "refactor the code to make more scaleable",
+    "date": "2025-07-28",
+    "completed": true,
+    "imported_from": "2025-07-21"
+  },
+  {
+    "text": "sort this app out",
+    "date": "2025-07-28",
+    "completed": true,
+    "imported_from": "2025-07-24"
+  },
+  {
+    "text": "make UI pretty",
+    "date": "2025-07-28",
+    "completed": true,
+    "imported_from": "2025-07-24"
+  },
+  {
+    "text": "fix ui",
+    "date": "2025-07-28",
+    "completed": true,
+    "imported_from": "2025-07-21"
+  },
+  {
+    "text": "fix the double adding bug",
+    "date": "2025-07-28",
+    "completed": true,
+    "imported_from": "2025-07-21"
+  },
+  {
+    "text": "add some sort of time based thing to this app -",
+    "date": "2025-07-28",
+    "completed": true,
+    "imported_from": "2025-07-21"
+  },
+  {
+    "text": "add soem cozy rain fall focus part",
+    "date": "2025-07-28",
+    "completed": true,
+    "imported_from": "2025-07-21"
+  },
+  {
+    "text": "write tests - the most borign part",
+    "date": "2025-07-28",
+    "completed": true,
+    "imported_from": "2025-07-21"
+  },
+  {
+    "text": "improve highlight",
+    "date": "2025-07-28",
+    "completed": true,
+    "imported_from": "2025-07-21"
+  },
+  {
+    "text": "refactor the code to make more scaleable",
+    "date": "2025-07-28",
+    "completed": true,
+    "imported_from": "2025-07-21"
+  },
+  {
+    "text": "sort this app out",
+    "date": "2025-07-28",
+    "completed": true,
+    "imported_from": "2025-07-24"
+  },
+  {
+    "text": "make UI pretty",
+    "date": "2025-07-28",
+    "completed": true,
+    "imported_from": "2025-07-24"
+  },
+  {
+    "date": "2025-07-28",
+    "text": "hi",
+    "completed": true
+  },
+  {
+    "date": "2025-07-28",
+    "text": "fix bbug",
+    "completed": false
+  },
+  {
+    "date": "2025-07-28",
+    "text": "make ui more pretty",
     "completed": false
   }
 ]

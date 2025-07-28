@@ -21,6 +21,7 @@ class ToDoApp:
         self.root = root
         self.root.title("Cozy To-Do App 🌿")
         self.root.configure(bg="#fef6e4")
+        self.index_to_text = {}
 
         self.goal_manager = GoalManager()
         self.today = self.goal_manager.today
@@ -49,6 +50,9 @@ class ToDoApp:
         self.complete_button = tk.Button(self.frame, text="Mark Selected Complete", command=self.mark_complete, bg="#f3d2c1")
         self.complete_button.pack(pady=5)
 
+        self.import_last_week_button = tk.Button(self.frame, text="Import Last Week's Incomplete Goals", command=self.import_last_week_goals, bg="#d3e4cd")
+        self.import_last_week_button.pack(pady=5)
+
         self.last_week_button = tk.Button(self.frame, text="View Last Weeks Goals", command=self.show_last_week_goals, bg="#d3e4cd")
         self.last_week_button.pack(pady=5)
 
@@ -57,8 +61,16 @@ class ToDoApp:
 
     def load_today_goals(self):
         self.listbox.delete(0, tk.END)
-        for goal in self.goal_manager.get_today_goals():
-            self.listbox.insert(tk.END, goal["text"])
+        self.index_to_text = {}
+
+        for idx,goal in enumerate(self.goal_manager.get_today_goals()):
+            text = goal["text"]
+            if "imported_from" in goal:
+                display = f"🌧️ {text}" #Highlight imported goals
+            else:
+                display = text
+            self.listbox.insert(tk.END, display)
+            self.index_to_text[idx] = text #Store original text for mapping
 
     def add_goal_event(self, event):
         self.add_goal()
@@ -72,7 +84,7 @@ class ToDoApp:
            
     def mark_complete(self):
         selected = self.listbox.curselection()
-        selected_texts = [self.listbox.get(i) for i in selected]
+        selected_texts = [self.index_to_text[i] for i in selected]
         self.goal_manager.mark_goals_complete(selected_texts)
         self.load_today_goals()
 
@@ -103,6 +115,14 @@ class ToDoApp:
                 self.listbox.insert(tk.END, f"🌧️ {current_date}")
         status = "✓" if goal["completed"] else "•"
         self.listbox.insert(tk.END, f"  {status} {goal['text']}")
+    
+    def import_last_week_goals(self):
+        imported =self.goal_manager.import_last_week_goals()
+        if imported:
+            messagebox.showinfo("Goals Imported", f"{len(imported)} goals added from last week🌧️")
+        else:
+            messagebox.showinfo("All done", "No imcomplete goals from last week to import! ✨")
+        self.load_today_goals()
 
 if __name__ == "__main__":
     root = tk.Tk()
