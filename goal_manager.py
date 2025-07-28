@@ -10,7 +10,7 @@ def get_date_string(offset=0):
 class GoalManager: 
   def __init__(self):
       self.data_file = DATA_FILE
-      self.all_goals = self.load_goals()
+      self.goals = self.load_goals()
       self.today = get_date_string()
   
   def load_goals(self):
@@ -21,9 +21,9 @@ class GoalManager:
   
   def save_goals(self):
       with open(self.data_file, "w") as f:
-          json.dump(self.all_goals, f, indent=2)
+          json.dump(self.goals, f, indent=2)
   
-  def get_goals_for_date(delf, date, completed=False):
+  def get_goals_for_date(self, date, completed=False):
     return [g for g in self.goals if g["date"] == date and g["completed"] == completed]
 
   def add_goal(self, text, imported_from=None):
@@ -49,8 +49,13 @@ class GoalManager:
 
   def get_incomplete_yesterday_goals(self):
     yesterday = get_date_string(-1)
+    incomplete = [
+      g for g in self.goals
+      if g["date"] == yesterday and not g["completed"]
+    ]
     imported = []
-    for g in self. get_incomplete_yesterday_goals():
+
+    for g in incomplete:
       if not any(
         existing["text"] == g["text"] 
         and existing["date"] == self.today
@@ -60,3 +65,39 @@ class GoalManager:
         self.add_goal(g["text"], imported_from=yesterday)
         imported.append(g["text"])
     return imported
+
+  def get_last_week_goals(self, include_today=False):
+    start = datetime.today() - timedelta(days=7)
+    end = datetime.today() if include_today else datetime.today() - timedelta(days=1)
+
+    last_week_dates = {
+      (start + timedelta(days=i)).strftime("%Y-%m-%d")
+      for i in range((end - start).days + 1)
+    }
+
+    return [g for g in self.goals if g["date"] in last_week_dates]
+
+  def get_incomplete_last_week_goals(self):
+    today = datetime.today()
+    start = today - timedelta(days=7)
+    return [
+      g for g in self.goals
+      if not g["completed"]
+      and start.strftime("%Y-%m-%d") <= g["date"] < self.today
+      and g.get("imported_from") != self.today
+    ]
+  
+  def import_last_week_goals(self):
+    imported = []
+    for g in self.get_incomplete_last_week_goals():
+        new_goal = {
+          "text": g["text"],
+          "date": self.today,
+          "completed": False,
+          "imported_from": g["date"]
+        }
+        self.goals.append(new_goal)
+        imported.append(new_goal)
+    self.save_goals()
+    return imported      
+       

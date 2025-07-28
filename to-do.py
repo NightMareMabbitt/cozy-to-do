@@ -49,6 +49,9 @@ class ToDoApp:
         self.complete_button = tk.Button(self.frame, text="Mark Selected Complete", command=self.mark_complete, bg="#f3d2c1")
         self.complete_button.pack(pady=5)
 
+        self.last_week_button = tk.Button(self.frame, text="View Last Weeks Goals", command=self.show_last_week_goals, bg="#d3e4cd")
+        self.last_week_button.pack(pady=5)
+
         self.load_today_goals()
         self.suggest_yesterday_goals()
 
@@ -63,26 +66,43 @@ class ToDoApp:
     def add_goal(self):
         text = self.entry.get().strip()
         if text:
-            self.manager.add_goal(text)
+            self.goal_manager.add_goal(text)
             self.load_today_goals()
             self.entry.delete(0, tk.END)
            
     def mark_complete(self):
         selected = self.listbox.curselection()
         selected_texts = [self.listbox.get(i) for i in selected]
-        self.manager.mark_goals_complete(selected_texts)
+        self.goal_manager.mark_goals_complete(selected_texts)
         self.load_today_goals()
 
     def suggest_yesterday_goals(self):
-        incomplete = self.manager.get_incomplete_yesterday_goals()
+        incomplete = self.goal_manager.get_incomplete_yesterday_goals()
         if incomplete:
             msg="You didn't complete these yesterday:\n\n"
             msg += "\n".join(f"- {g['text']}" for g in incomplete)
             msg += "\n\nAdd them to today?"
             if messagebox.askyesno("Suggestions ", msg):
-                self.manager.import_yesterday_goals()
+                self.goal_manager.import_yesterday_goals()
                 self.load_today_goals()
     
+    def show_last_week_goals(self):
+        last_week = self.goal_manager.get_last_week_goals()
+        self.listbox.delete(0, tk.END)
+
+        if not last_week:
+            self.listbox.insert(tk.END, "No goals from the last 7 days. ✨")
+            return
+
+            last_week.sort(key=lambda g: g["date"])
+
+        current_date = ""
+        for goal in last_week:
+            if goal["date"] != current_date:
+                current_date = goal["date"]
+                self.listbox.insert(tk.END, f"🌧️ {current_date}")
+        status = "✓" if goal["completed"] else "•"
+        self.listbox.insert(tk.END, f"  {status} {goal['text']}")
 
 if __name__ == "__main__":
     root = tk.Tk()

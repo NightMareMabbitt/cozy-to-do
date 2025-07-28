@@ -128,5 +128,20 @@
     "date": "2025-07-21",
     "text": "refactor the code to make more scaleable",
     "completed": false
+  },
+  {
+    "date": "2025-07-24",
+    "text": "sort this app out",
+    "completed": false
+  },
+  {
+    "date": "2025-07-24",
+    "text": "make UI pretty",
+    "completed": false
+  },
+  {
+    "date": "2025-07-28",
+    "text": "hello",
+    "completed": false
   }
 ]
