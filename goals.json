@@ -422,11 +422,142 @@
   {
     "date": "2025-07-28",
     "text": "fix bbug",
-    "completed": false
+    "completed": true
   },
   {
     "date": "2025-07-28",
     "text": "make ui more pretty",
     "completed": false
+  },
+  {
+    "date": "2025-07-28",
+    "text": "mock up more cozy ui in figma to then prototype",
+    "completed": true
+  },
+  {
+    "date": "2025-07-28",
+    "text": "fix the view last weeks goals button and add more funtionality to it",
+    "completed": false
+  },
+  {
+    "date": "2025-07-28",
+    "text": "add in spell check?",
+    "completed": false
+  },
+  {
+    "date": "2025-07-28",
+    "text": "fix dark mode",
+    "completed": false
+  },
+  {
+    "text": "sort this app out",
+    "date": "2025-07-30",
+    "completed": true,
+    "imported_from": "2025-07-24"
+  },
+  {
+    "text": "make UI pretty",
+    "date": "2025-07-30",
+    "completed": true,
+    "imported_from": "2025-07-24"
+  },
+  {
+    "text": "make ui more pretty",
+    "date": "2025-07-30",
+    "completed": true,
+    "imported_from": "2025-07-28"
+  },
+  {
+    "text": "fix the view last weeks goals button and add more funtionality to it",
+    "date": "2025-07-30",
+    "completed": true,
+    "imported_from": "2025-07-28"
+  },
+  {
+    "text": "add in spell check?",
+    "date": "2025-07-30",
+    "completed": true,
+    "imported_from": "2025-07-28"
+  },
+  {
+    "text": "fix dark mode",
+    "date": "2025-07-30",
+    "completed": true,
+    "imported_from": "2025-07-28"
+  },
+  {
+    "date": "2025-07-30",
+    "text": "fix many, may things",
+    "completed": false
+  },
+  {
+    "date": "2025-07-30",
+    "text": "make the UI big enough so that it keeps everything in view",
+    "completed": false
+  },
+  {
+    "date": "2025-07-31",
+    "text": "fix many, may things",
+    "completed": true,
+    "imported_from": "2025-07-30"
+  },
+  {
+    "date": "2025-07-31",
+    "text": "make the UI big enough so that it keeps everything in view",
+    "completed": true,
+    "imported_from": "2025-07-30"
+  },
+  {
+    "text": "sort this app out",
+    "date": "2025-07-31",
+    "completed": true,
+    "imported_from": "2025-07-24"
+  },
+  {
+    "text": "make UI pretty",
+    "date": "2025-07-31",
+    "completed": true,
+    "imported_from": "2025-07-24"
+  },
+  {
+    "text": "make ui more pretty",
+    "date": "2025-07-31",
+    "completed": true,
+    "imported_from": "2025-07-28"
+  },
+  {
+    "text": "fix the view last weeks goals button and add more funtionality to it",
+    "date": "2025-07-31",
+    "completed": true,
+    "imported_from": "2025-07-28"
+  },
+  {
+    "text": "add in spell check?",
+    "date": "2025-07-31",
+    "completed": true,
+    "imported_from": "2025-07-28"
+  },
+  {
+    "text": "fix dark mode",
+    "date": "2025-07-31",
+    "completed": true,
+    "imported_from": "2025-07-28"
+  },
+  {
+    "date": "2025-07-31",
+    "text": "nearly there",
+    "completed": true
+  },
+  {
+    "date": "2025-07-31",
+    "text": "fix dark mode",
+    "completed": false,
+    "imported_from": "2025-07-28"
+  },
+  {
+    "date": "2025-07-31",
+    "text": "make the UI big enough so that it keeps everything in view",
+    "completed": false,
+    "imported_from": "2025-07-30"
   }
 ]
