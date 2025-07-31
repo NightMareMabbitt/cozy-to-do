@@ -32,6 +32,35 @@ class ToDoApp:
 
         self.create_main_ui()
     
+    def toggle_theme(self): 
+        self.dark_mode = not self.dark_mode
+
+        if self.dark_mode:
+            bg = "#1e1e1e",
+            fg = "#f5f5f5",
+            entry_bg  = "#2c2c2c",
+            list_bg = "#2e2e2e",
+            button_bg = "#3e3e3e"
+            select_bg = "#4e4e4e"
+        else:
+            bg = "#fef6e4"
+            fg = "#333"
+            entry_bg = "#ffffff"
+            list_bg = "#ffffff"
+            button_bg = "#f3d2c1"
+            select_bg = "#d3e4cd"
+        
+        self.root.configure(bg=bg)
+        self.frame.configure(bg=bg)
+        self.title_label.configure(bg=bg, fg=fg)
+        self.entry.configure(bg=entry_bg, fg=fg, insertbackground=fg)
+
+        self.listbox.configure(bg=list_bg, fg=fg, selectbackground=select_bg, highlightcolor=select_bg)
+
+        for btn in [self.add_button, self.complete_button, 
+                    self.import_last_week_button, self.last_week_button, self.toggle_button]:
+            btn.configure(bg=button_bg, fg=fg, activebackground=button_bg, activeforeground=fg)
+    
     def create_button(self, parent, text, command, bg="#f3d2c1"):
         return tk.Button(
             parent,
@@ -127,6 +156,15 @@ class ToDoApp:
         )
         self.last_week_button.pack(pady=(4, 10))
 
+        self.toggle_button = self.create_button(
+            self.frame, 
+            "Toggle Rainy Mode", 
+            self.toggle_theme, 
+            bg="#cddafd"
+        )
+
+        self.toggle_button.pack(pady=(4, 10))
+
         self.frame.columnconfigure(0, weight=1)
         self.frame.rowconfigure(0, weight=1)
 
@@ -221,7 +259,7 @@ class ToDoApp:
             selectbackground="#d3e4cd",
             selectforeground="#000",
             bg="#ffffff",
-            g="#333",
+            fg="#333",
             relief="flat",
             bd=2
         )
