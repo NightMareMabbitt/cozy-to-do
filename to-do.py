@@ -36,13 +36,15 @@ class ToDoApp:
         self.dark_mode = not self.dark_mode
 
         if self.dark_mode:
+            # Dark Mode
             bg = "#1e1e1e",
             fg = "#f5f5f5",
             entry_bg  = "#2c2c2c",
-            list_bg = "#2e2e2e",
-            button_bg = "#3e3e3e"
-            select_bg = "#4e4e4e"
+            list_bg = "#2a2a2a",
+            button_bg = "#3e4e50"
+            select_bg = "#526760"
         else:
+            # Light Mode
             bg = "#fef6e4"
             fg = "#333"
             entry_bg = "#ffffff"
@@ -89,8 +91,6 @@ class ToDoApp:
             self.frame, 
             text=prompt_text, 
             font=("Helvetica", 18, "bold"), 
-            bg="#fef6e4", 
-            wraplength=300,
             justify="center"
             )
         self.title_label.pack(pady=(10, 5))
