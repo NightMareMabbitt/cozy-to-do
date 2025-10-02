@@ -2,6 +2,8 @@ import tkinter as tk
 from tkinter import messagebox, Scrollbar, Listbox
 from goal_manager import GoalManager
 import random
+import sys
+import subprocess
 
 PROMPTS = [
     "What is one small step you can take today?",
@@ -16,160 +18,261 @@ PROMPTS = [
     "Anything you'd like to accomplish today?",
 ]
 
+class CozyTheme: 
+    def __init__(self):
+        self.light = {
+        'bg_primary': '#FFF8F0',
+        'bg_secondary': '#F5F1EB',
+        'surface': '#FFFFFF',
+        'accent': '#D4A574',
+        'text_primary': '#2F1B14',
+        'text_secondary': '#5D4E37',
+        'success': '#7B9A5A',
+        'border': '#E6D7C3',
+        'hover': '#E8D5B7',
+        'button_primary': '#D4A574',
+        'button_secondary': '#C8B99C',
+        'select_bg': '#D3E4CD'
+        }
+
+        self.dark = {
+        'bg_primary': '#1A1611',
+        'bg_secondary': '#2A241F',
+        'surface': '#332B26',
+        'accent': '#E6C08A',
+        'text_primary': '#F5F1EB',
+        'text_secondary': '#D2B48C',
+        'success': '#8FAA6F',
+        'border': '#4A3F35',
+        'hover': '#3D342A',
+        'button_primary': '#B8956F',
+        'button_secondary': '#9A8269',
+        'select_bg': '#4A5D47'
+        }
+
+FONTS = {
+    'title': ('SF Pro Display', 20, 'bold') if sys.platform == 'darwin' else ('Helvetica', 20, 'bold'),
+    'subtitle': ('SF Pro Display', 16) if sys.platform == 'darwin' else ('Helvetica', 16),
+    'body': ('SF Pro Text', 14) if sys.platform == 'darwin' else ('Helvetica', 14),
+    'button': ('SF Pro Text', 12, 'bold') if sys.platform == 'darwin' else ('Helvetica', 12, 'bold'),
+    'small': ('SF Pro Text', 11) if sys.platform == 'darwin' else ('Helvetica', 11),
+}
+
+SPACING = {
+    'xs': 4,
+    'sm': 8,
+    'md': 16,
+    'lg': 24,
+    'xl': 32,
+}
 class ToDoApp:
     def __init__(self, root):
         self.root = root
         self.root.title("Cozy To-Do App 🌿")
         self.root.configure(bg="#fef6e4")
-        self.root.geometry("450x500")
-        self.root.minsize(360, 420)
-        self.dark_mode = False
+        self.root.geometry("550x650")
+        self.root.minsize(400, 500)
+        
+        self.theme = CozyTheme()
+        self.dark_mode = self.detect_sytem_dark_mode()
         
 
         self.goal_manager = GoalManager()
         self.today = self.goal_manager.today
-        # self.index_to_text = {}
+        self.index_to_text = {}
 
         self.create_main_ui()
+        # self.apply_current_theme()
+
+        if sys.platform == 'darwin':
+            self.root.after(1000, self.check_system_theme)
+    
+    def detect_sytem_dark_mode(self):
+        try:
+            if sys.platform == 'darwin':
+                result = subprocess.run(
+                    ['defaults', 'read', '-g', 'AppleInterfaceStyle'],
+                    capture_output=True, text=True
+                )
+                return 'Dark' in result.stdout
+        except Exception: 
+            pass
+        return False
+    
+    def check_system_theme(self):
+        system_dark = self.detect_sytem_dark_mode()
+        if system_dark != self.dark_mode:
+            self.dark_mode = system_dark
+            self.apply_current_theme()
+        
+        self.root.after(2000, self.check_system_theme)
+    
+    def get_current_colours(self):
+        return self.theme.dark if self.dark_mode else self.theme.light
+    
+    def apply_current_theme(self):
+        colours = self.get_current_colours()
+
+        self.root.configure(bg=colours['bg_primary'])
+
+        self.frame.configure(bg=colours['bg_secondary'])
+
+        self.prompt_label.configure(bg=colours['bg_secondary'], fg=colours['text_primary'])
+        self.title_label.configure(bg=colours['bg_primary'], fg=colours['text_primary'])
+
+        self.entry.configure(
+            bg=colours['surface'], 
+            fg=colours['text_primary'], 
+            insertbackground=colours['text_primary'],
+            highlightbackground=colours['border'],
+            highlightcolor=colours['accent'],
+            )
+        
+        self.listbox.configure(
+            bg=colours['surface'],
+            fg=colours['text_primary'],
+            selectbackground=colours['select_bg'],
+            selectforeground=colours['text_primary'],
+            highlightbackground=colours['border'],
+            highlightcolor=colours['accent'],
+        )
+
+        button_configs =[
+            (self.add_button, colours['button_primary']),
+            (self.complete_button, colours['button_primary']),
+            (self.import_last_week_button, colours['button_secondary']),
+            (self.last_week_button, colours['button_secondary']),
+            (self.toggle_button, colours['accent']),
+        ]
+
+        for button, bg_color in button_configs:
+            button.configure(
+                bg= bg_color, 
+                fg = colours['text_primary'],
+                activebackground=['hover'],
+                activeforeground=colours['text_primary'],
+                highlightbackground=colours['border'],
+            )
+    
+
     
     def toggle_theme(self): 
         self.dark_mode = not self.dark_mode
+        self.apply_current_theme()
 
-        if self.dark_mode:
-            # Dark Mode
-            bg = "#1e1e1e",
-            fg = "#f5f5f5",
-            entry_bg  = "#2c2c2c",
-            list_bg = "#2a2a2a",
-            button_bg = "#3e4e50"
-            select_bg = "#526760"
-        else:
-            # Light Mode
-            bg = "#fef6e4"
-            fg = "#333"
-            entry_bg = "#ffffff"
-            list_bg = "#ffffff"
-            button_bg = "#f3d2c1"
-            select_bg = "#d3e4cd"
-        
-        self.root.configure(bg=bg)
-        self.frame.configure(bg=bg)
-        self.title_label.configure(bg=bg, fg=fg)
-        self.entry.configure(bg=entry_bg, fg=fg, insertbackground=fg)
-
-        self.listbox.configure(bg=list_bg, fg=fg, selectbackground=select_bg, highlightcolor=select_bg)
-
-        for btn in [self.add_button, self.complete_button, 
-                    self.import_last_week_button, self.last_week_button, self.toggle_button]:
-            btn.configure(bg=button_bg, fg=fg, activebackground=button_bg, activeforeground=fg)
+        # Update button text
+        mode_text = "Light Mode" if self.dark_mode else "Dark Mode"
+        self.toggle_button.configure(text=f"Switch to {mode_text}")
     
-    def create_button(self, parent, text, command, bg="#f3d2c1"):
-        return tk.Button(
+    def create_rounded_button(self, parent, text, command, bg_color, widft=140, height=35):
+        button = tk.Button (
             parent,
             text=text,
             command=command,
-            font=("Helvetica", 12),
-            bg=bg,
-            fg="#333",
-            activebackground="#f3d2c1",
-            activeforeground="#000",
+            font=FONTS['button'],
+            bg=bg_color,
+            fg=self.get_current_colours()['text_primary'],
+            activebackground=self.get_current_colours()['hover'],
+            activeforeground=self.get_current_colours()['text_primary'],
             relief="flat",
-            bd=2,
-            padx=10,
-            pady=4
+            bd=0,
+            padx=SPACING['md'],
+            pady=SPACING['sm'],
+            cursor="hand2"
         )
+        return button
 
     def create_main_ui(self):
-        # Frame for todays tasks  
-        self.frame = tk.Frame(root, bg="#fef6e4")
-        self.frame.pack(padx=20, pady=20, fill="both", expand=True)
-
+        self.frame = tk.Frame(self.root, bg="#fef6e4")
+        self.frame.pack(padx=SPACING['lg'], pady=SPACING['lg'], fill="both", expand=True)
+        
         today_prompt = random.choice(PROMPTS)
-        prompt_text = f"{today_prompt}\n({self.today})"
-
-        self.title_label = tk.Label(
-            self.frame, 
-            text=prompt_text, 
-            font=("Helvetica", 18, "bold"), 
-            justify="center"
-            )
-        self.title_label.pack(pady=(10, 5))
-
-        self.title_label = tk.Label(
-            self.frame, 
-            text=f"Today's Goals ({self.today})", 
-            font=("Helvetica", 16, "bold"), 
-            bg="#fef6e4"
+        self.prompt_label = tk.Label(
+            self.frame,
+            text = today_prompt,
+            font= FONTS['title'],
+            justify="center",
+            wraplength=500, 
+            bg="#fef6e4",
         )
-        self.title_label.pack(pady=(10, 5))
+
+        self.prompt_label.pack(pady=(SPACING['md'], SPACING['sm']))
 
         self.entry = tk.Entry(
-            self.frame, 
-            width=32,
-            font=("Helvetica", 13),
+            self.frame,
+            width=40,
+            font=FONTS['body'],
             bg="#ffffff",
             fg="#333",
-            insertbackground="#000",
+            insertbackground="#333",
             bd=2,
-            relief="flat")
-
-        self.entry.pack(pady=(6))
+            relief="flat",
+            highlightthickness=2,
+            highlightcolor="#D4A574",
+        )
+        self.entry.pack(pady=(SPACING['sm'], SPACING['xs']))
         self.entry.bind("<Return>", self.add_goal_event)
 
-        self.add_button = self.create_button(self.frame, "Add Goal", self.add_goal)
-        self.add_button.pack(pady=(4, 10))
+        colours = self.get_current_colours()
+        self.add_button = self.create_rounded_button(
+            self.frame, "Add Goal", self.add_goal, colours['button_primary']
+        )
+        self.add_button.pack(pady=(SPACING['xs'], SPACING['md']))
+
+        listbox_frame = tk.Frame(self.frame, bg=colours['bg_primary'])
+        listbox_frame.pack(pady=SPACING['sm'], fill="both", expand=True)
+
+        scrollbar = tk.Scrollbar(listbox_frame)
+        scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
 
         self.listbox = tk.Listbox(
-            self.frame, 
-            selectmode=tk.MULTIPLE,
-            width=50, 
+            listbox_frame,
+            yscrollcommand=scrollbar.set,
+            width= 50,
+            height=12, 
+            font=FONTS['body'],
             bg="#ffffff",
             fg="#333",
             selectbackground="#d3e4cd",
-            selectforeground="#000",
+            selectforeground="#333",
             relief="flat",
-            highlightcolor="#d3e4cd",
-            highlightthickness=0, 
-            bd=2
-            )
-        self.listbox.pack(pady=(5))
-
-        self.complete_button = self.create_button(self.frame,
-        "Mark Selected Complete", 
-        self.mark_complete
-        )
-        self.complete_button.pack(pady=(8, 4))
-
-        self.import_last_week_button = self.create_button(
-            self.frame, 
-            "Import Last Week's Goals", 
-            self.import_last_week_goals, 
-            bg="#f3d2c1"
-        )
-        self.import_last_week_button.pack(pady=(4))
-
-        self.last_week_button = self.create_button(
-            self.frame, 
-            "View Last Weeks Goals", 
-            self.show_last_week_overlay, 
-            bg="#d3e4cd"
-        )
-        self.last_week_button.pack(pady=(4, 10))
-
-        self.toggle_button = self.create_button(
-            self.frame, 
-            "Toggle Rainy Mode", 
-            self.toggle_theme, 
-            bg="#cddafd"
+            highlightthickness=2,
+            highlightcolor="#D4A574",
+            bd=0,
         )
 
-        self.toggle_button.pack(pady=(4, 10))
+        self.listbox.pack(side=tk.LEFT, fill="both", expand=True, padx=(0,2)) 
+        scrollbar.config(command=self.listbox.yview)
+
+        button_frame = tk.Frame(self.frame, bg=colours['bg_primary'])
+        button_frame.pack(pady=SPACING['md'], fill='x')
+
+        self.complete_button = self.create_rounded_button(
+            button_frame, "Mark Complete", self.mark_complete, colours['success']
+        )
+        self.complete_button.pack(pady=SPACING['xs'])
+
+        self.import_last_week_button = self.create_rounded_button(
+            button_frame, "Import Last Weeks Goals", self.import_last_week_goals, colours['button_secondary']
+        )
+        self.import_last_week_button.pack(pady=SPACING['xs'])
+
+        self.last_week_button = self.create_rounded_button(
+            button_frame, "View Last Weeks Goals", self.show_last_week_overlay, colours['button_secondary']
+        )
+        self.last_week_button.pack(pady=SPACING['xs'])
+
+        mode_text = "Light mode" if self.dark_mode else "Dark Mode"
+        self.toggle_button = self.create_rounded_button(
+            button_frame, f"Switch to {mode_text}", self.toggle_theme, colours['accent']
+        )
+        self.toggle_button.pack(pady=(SPACING['md'], SPACING['xs']))
 
         self.frame.columnconfigure(0, weight=1)
-        self.frame.rowconfigure(0, weight=1)
 
         self.load_today_goals()
         self.suggest_yesterday_goals()
+
 
     def load_today_goals(self):
         self.listbox.delete(0, tk.END)
@@ -190,9 +293,19 @@ class ToDoApp:
     def add_goal(self):
         text = self.entry.get().strip()
         if text:
-            self.goal_manager.add_goal(text)
-            self.load_today_goals()
-            self.entry.delete(0, tk.END)
+            try:
+                self.goal_manager.add_goal(text)
+                self.load_today_goals()
+                self.entry.delete(0, tk.END)
+
+                original_bg = self.add_button.cget("bg")
+                self.add_button.configure(bg=self.get_current_colours()['success'])
+                self.root.after(150, lambda: self.add_button.configure(bg=original_bg))
+
+            except Exception as e: 
+                messagebox.showerror("Error", f"Failed to add goal: {str(e)}")
+
+
            
     def mark_complete(self):
         selected = self.listbox.curselection()
@@ -239,7 +352,7 @@ class ToDoApp:
     def show_last_week_overlay(self):
         overlay =tk.Toplevel(self.root)
         overlay.title("Last Week's Goals")
-        overlay.geometry("350x300+100+100")
+        overlay.geometry("400x400+100+100")
         overlay.configure(bg="#ffffff")
         overlay.transient(self.root)
         overlay.grab_set()
@@ -255,6 +368,7 @@ class ToDoApp:
         self.past_listbox = Listbox(
             frame, 
             yscrollcommand=scrollbar.set,
+            width=40,
             font=("Helvetica", 12),
             selectbackground="#d3e4cd",
             selectforeground="#000",
@@ -263,7 +377,7 @@ class ToDoApp:
             relief="flat",
             bd=2
         )
-        self.past_listbox.pack(side=tk.LEFT, fill=tk.BOTH)
+        self.past_listbox.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
 
         scrollbar.config(command=self.past_listbox.yview)
 

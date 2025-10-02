@@ -559,5 +559,165 @@
     "text": "make the UI big enough so that it keeps everything in view",
     "completed": false,
     "imported_from": "2025-07-30"
+  },
+  {
+    "text": "make ui more pretty",
+    "date": "2025-08-04",
+    "completed": false,
+    "imported_from": "2025-07-28"
+  },
+  {
+    "text": "fix the view last weeks goals button and add more funtionality to it",
+    "date": "2025-08-04",
+    "completed": true,
+    "imported_from": "2025-07-28"
+  },
+  {
+    "text": "add in spell check?",
+    "date": "2025-08-04",
+    "completed": false,
+    "imported_from": "2025-07-28"
+  },
+  {
+    "text": "fix dark mode",
+    "date": "2025-08-04",
+    "completed": true,
+    "imported_from": "2025-07-28"
+  },
+  {
+    "text": "fix many, may things",
+    "date": "2025-08-04",
+    "completed": true,
+    "imported_from": "2025-07-30"
+  },
+  {
+    "text": "make the UI big enough so that it keeps everything in view",
+    "date": "2025-08-04",
+    "completed": true,
+    "imported_from": "2025-07-30"
+  },
+  {
+    "text": "fix dark mode",
+    "date": "2025-08-04",
+    "completed": true,
+    "imported_from": "2025-07-31"
+  },
+  {
+    "text": "make the UI big enough so that it keeps everything in view",
+    "date": "2025-08-04",
+    "completed": true,
+    "imported_from": "2025-07-31"
+  },
+  {
+    "date": "2025-08-04",
+    "text": "fix mac dark mode, windows seemst to be fine",
+    "completed": false
+  },
+  {
+    "date": "2025-08-04",
+    "text": "make list box expand to so that wider goals fit",
+    "completed": false
+  },
+  {
+    "date": "2025-08-04",
+    "text": "make things cozier and stuff, cos this ui aint it man",
+    "completed": false
+  },
+  {
+    "date": "2025-08-04",
+    "text": "get  rid of the annoying box behind the main goal text",
+    "completed": false
+  },
+  {
+    "text": "fix many, may things",
+    "date": "2025-08-06",
+    "completed": true,
+    "imported_from": "2025-07-30"
+  },
+  {
+    "text": "make the UI big enough so that it keeps everything in view",
+    "date": "2025-08-06",
+    "completed": true,
+    "imported_from": "2025-07-30"
+  },
+  {
+    "text": "fix dark mode",
+    "date": "2025-08-06",
+    "completed": true,
+    "imported_from": "2025-07-31"
+  },
+  {
+    "text": "make the UI big enough so that it keeps everything in view",
+    "date": "2025-08-06",
+    "completed": true,
+    "imported_from": "2025-07-31"
+  },
+  {
+    "text": "make ui more pretty",
+    "date": "2025-08-06",
+    "completed": false,
+    "imported_from": "2025-08-04"
+  },
+  {
+    "text": "add in spell check?",
+    "date": "2025-08-06",
+    "completed": false,
+    "imported_from": "2025-08-04"
+  },
+  {
+    "text": "fix mac dark mode, windows seemst to be fine",
+    "date": "2025-08-06",
+    "completed": false,
+    "imported_from": "2025-08-04"
+  },
+  {
+    "text": "make list box expand to so that wider goals fit",
+    "date": "2025-08-06",
+    "completed": false,
+    "imported_from": "2025-08-04"
+  },
+  {
+    "text": "make things cozier and stuff, cos this ui aint it man",
+    "date": "2025-08-06",
+    "completed": false,
+    "imported_from": "2025-08-04"
+  },
+  {
+    "text": "get  rid of the annoying box behind the main goal text",
+    "date": "2025-08-06",
+    "completed": false,
+    "imported_from": "2025-08-04"
+  },
+  {
+    "date": "2025-08-06",
+    "text": "chnage the import last weeks goals to importing goals from the last couple days? or yesterday",
+    "completed": false
+  },
+  {
+    "date": "2025-09-27",
+    "text": "fix the annoying blur",
+    "completed": false
+  },
+  {
+    "date": "2025-09-27",
+    "text": "make main screen big enough so that all buttons are visable",
+    "completed": false
+  },
+  {
+    "text": "fix the annoying blur",
+    "date": "2025-10-02",
+    "completed": false,
+    "imported_from": "2025-09-27"
+  },
+  {
+    "text": "make main screen big enough so that all buttons are visable",
+    "date": "2025-10-02",
+    "completed": false,
+    "imported_from": "2025-09-27"
+  },
+  {
+    "date": "2025-10-02",
+    "text": "fix all of this manaaaa",
+    "completed": false
   }
 ]
