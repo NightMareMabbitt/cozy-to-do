@@ -115,10 +115,23 @@ class ToDoApp:
 
         self.root.configure(bg=colours['bg_primary'])
 
-        self.frame.configure(bg=colours['bg_secondary'])
+        if hasattr(self, 'main_container'):
+            self.main_container.configure(bg=colours['bg_primary'])
+        if hasattr(self, 'header_frame'):
+            self.header_frame.configure(bg=colours['bg_primary'])
+        if hasattr(self, 'content_frame'):
+            self.content_frame.configure(bg=colours['bg_secondary'])
 
-        self.prompt_label.configure(bg=colours['bg_secondary'], fg=colours['text_primary'])
-        self.title_label.configure(bg=colours['bg_primary'], fg=colours['text_primary'])
+        if hasattr(self, 'prompt_label'):
+            self.prompt_label.configure(bg=colours['bg_primary'], fg=colours['text_primary'])
+        if hasattr(self, 'date_label'):
+            self.date_label.configure(bg=colours['bg_primary'], fg=colours['text_secondary'])
+
+
+        # self.frame.configure(bg=colours['bg_secondary'])
+
+        # self.prompt_label.configure(bg=colours['bg_secondary'], fg=colours['text_primary'])
+        # self.title_label.configure(bg=colours['bg_primary'], fg=colours['text_primary'])
 
         self.entry.configure(
             bg=colours['surface'], 
@@ -137,23 +150,43 @@ class ToDoApp:
             highlightcolor=colours['accent'],
         )
 
-        button_configs =[
-            (self.add_button, colours['button_primary']),
-            (self.complete_button, colours['button_primary']),
-            (self.import_last_week_button, colours['button_secondary']),
-            (self.last_week_button, colours['button_secondary']),
-            (self.toggle_button, colours['accent']),
-        ]
-
-        for button, bg_color in button_configs:
-            button.configure(
-                bg= bg_color, 
-                fg = colours['text_primary'],
-                activebackground=['hover'],
-                activeforeground=colours['text_primary'],
-                highlightbackground=colours['border'],
-            )
-    
+         # Update all buttons
+        self.add_button.configure(
+            bg=colours['button_primary'], 
+            fg=colours['text_primary'],
+            activebackground=colours['hover'],
+            activeforeground=colours['text_primary'],
+        )
+        
+        self.complete_button.configure(
+            bg=colours['success'], 
+            fg='#FFFFFF',
+            activebackground=colours['hover'],
+            activeforeground=colours['text_primary'],
+        )
+        
+        self.import_last_week_button.configure(
+            bg=colours['button_secondary'], 
+            fg=colours['text_primary'],
+            activebackground=colours['hover'],
+            activeforeground=colours['text_primary'],
+        )
+        
+        self.last_week_button.configure(
+            bg=colours['button_secondary'], 
+            fg=colours['text_primary'],
+            activebackground=colours['hover'],
+            activeforeground=colours['text_primary'],
+        )
+       
+        mode_emoji = "☀️" if self.dark_mode else "🌙"
+        self.toggle_button.configure(
+            text=mode_emoji,
+            bg=colours['surface'],
+            fg=colours['accent'],
+            activebackground=colours['hover'],
+            activeforeground=colours['accent'],
+        )
 
     
     def toggle_theme(self): 
