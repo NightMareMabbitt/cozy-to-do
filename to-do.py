@@ -59,8 +59,8 @@ FONTS = {
 }
 
 SPACING = {
-    'xs': 4,
-    'sm': 8,
+    'xs': 6,
+    'sm': 10,
     'md': 16,
     'lg': 24,
     'xl': 32,
@@ -70,8 +70,8 @@ class ToDoApp:
         self.root = root
         self.root.title("Cozy To-Do App 🌿")
         self.root.configure(bg="#fef6e4")
-        self.root.geometry("550x650")
-        self.root.minsize(400, 500)
+        self.root.geometry("580x720")
+        self.root.minsize(480, 600)
         
         self.theme = CozyTheme()
         self.dark_mode = self.detect_sytem_dark_mode()
@@ -82,7 +82,7 @@ class ToDoApp:
         self.index_to_text = {}
 
         self.create_main_ui()
-        # self.apply_current_theme()
+        self.apply_current_theme()
 
         if sys.platform == 'darwin':
             self.root.after(1000, self.check_system_theme)

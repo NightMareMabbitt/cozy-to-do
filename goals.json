@@ -719,5 +719,43 @@
     "date": "2025-10-02",
     "text": "fix all of this manaaaa",
     "completed": false
+  },
+  {
+    "date": "2025-10-03",
+    "text": "fix the annoying blur",
+    "completed": false,
+    "imported_from": "2025-10-02"
+  },
+  {
+    "date": "2025-10-03",
+    "text": "make main screen big enough so that all buttons are visable",
+    "completed": false,
+    "imported_from": "2025-10-02"
+  },
+  {
+    "date": "2025-10-03",
+    "text": "fix all of this manaaaa",
+    "completed": false,
+    "imported_from": "2025-10-02"
+  },
+  {
+    "date": "2025-10-24",
+    "text": "phone galedin",
+    "completed": false
+  },
+  {
+    "date": "2025-10-24",
+    "text": "find out redis solutions",
+    "completed": false
+  },
+  {
+    "date": "2025-10-24",
+    "text": "gpls",
+    "completed": false
+  },
+  {
+    "date": "2025-10-24",
+    "text": "reach out to rich",
+    "completed": true
   }
 ]
