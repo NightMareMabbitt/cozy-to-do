@@ -761,21 +761,21 @@
   {
     "date": "2025-11-07",
     "text": "SORT MY LIFE OUT WTFFFF",
-    "completed": false
+    "completed": true
   },
   {
     "date": "2025-11-07",
     "text": "Fix the stupid text hilghlight",
-    "completed": false
+    "completed": true
   },
   {
     "date": "2025-11-07",
     "text": "and add in autocorrect",
-    "completed": false
+    "completed": true
   },
   {
     "date": "2025-11-07",
     "text": "for the ross' of the world",
-    "completed": false
+    "completed": true
   }
 ]

@@ -24,30 +24,41 @@ class CozyTheme:
         'bg_primary': '#FFF8F0',
         'bg_secondary': '#F5F1EB',
         'surface': '#FFFFFF',
+        'card': '#FEFEFE',
         'accent': '#D4A574',
+        'accent_hover': '#B89558',
         'text_primary': '#2F1B14',
         'text_secondary': '#5D4E37',
+        'text_muted': '#9B8D82',
         'success': '#7B9A5A',
+        'success_hover': '#5A7A50',
         'border': '#E6D7C3',
+        'border_light': '#F0E8DD',
         'hover': '#E8D5B7',
         'button_primary': '#D4A574',
         'button_secondary': '#C8B99C',
-        'select_bg': '#D3E4CD'
+        'select_bg': '#D3E4CD',
+        'shadow': '#00000008'
         }
 
         self.dark = {
         'bg_primary': '#1A1611',
         'bg_secondary': '#2A241F',
         'surface': '#332B26',
+        'card': '#3D342A',
         'accent': '#E6C08A',
+        'accent_hover': '#CBA66F',
         'text_primary': '#F5F1EB',
         'text_secondary': '#D2B48C',
         'success': '#8FAA6F',
+        'success_hover': '#6F8F57',
         'border': '#4A3F35',
+        'border_light': '#5D4E37',
         'hover': '#3D342A',
         'button_primary': '#B8956F',
         'button_secondary': '#9A8269',
-        'select_bg': '#4A5D47'
+        'select_bg': '#4A5D47',
+        'shadow': '#00000020'
         }
 
 FONTS = {
@@ -65,6 +76,63 @@ SPACING = {
     'lg': 24,
     'xl': 32,
 }
+
+class roundedButton(tk.Canvas):
+    def _init_(self, parent, text, command, bg_color, fg_color, hover_color, **kwargs):
+        width = kwargs.pop('width', 220)
+        height = kwargs.pop('height', 44)
+        super().__init__(parent, width=width, height=height, bg=parent['bg'], highlightthickness=0, **kwargs)
+
+        self.command = command
+        self.bg_color = bg_color 
+        self.fg_color = fg_color
+        self.hover_color = hover_color
+        self.text = text
+        self.is_hovered = False
+
+        self.draw_button()
+
+        self.bind("<Button-1>", self.on_click)
+        self.bind("<Enter>", self.on_enter)
+        self.bind("<Leave>", self.on_leave)
+    
+    def draw_button(self):
+        self.delete("all")
+        color = self.hover_color if self.is_hovered else self.bg_color
+
+        x0, y0, x1, y1 = 2, 2, self.iwinf_reqwidth() -2, self.winfo_reqheight() -2
+        radus = 10
+
+        self.create_arc(x0, y0, x0 + radius*2, y0 + radius*2, start=90, extent=90, fill=color, outline='')
+        self.create_arc(x1 - radius*2, y0, x1, y0 + radius*2, start=0, extent=90, fill=color, outline='')
+        self.create_arc(x0, y1 - radius*2, x0 + radius*2, y1, start=180, extent=90, fill=color, outline='')
+        self.create_arc(x1 - radius*2, y1 - radius*2, x1, y1, start=270, extent=90, fill=color, outline='')
+
+        self.create_rectangle(x0 + radius, y0, x1 - radius, y1, fill=color, outline='')
+        self.create_rectangle(x0, y0 + radius, x1, y1 - radius, fill=color, outline='')
+
+        self.create_text((self.winfo_reqwidth()//2, self.winfo_reqheight()//2), text=self.text, fill=self.fg_color, font=FONTS['button'])
+
+    def on_click(self, event):
+        if self.command:
+            self.command()
+    
+    def on_enter(self, event):
+        self.is_hovered = True
+        self.draw_button()
+        self.configure(cursor="hand2")
+    
+    def on_leave(self, event):
+        self.is_hovered = False
+        self.draw_button()
+        self.configure(cursor="")
+
+    def update_colors(self, bg_color, fg_color, hover_color):
+        self.bg_color = bg_color
+        self.fg_color = fg_color
+        self.hover_color = hover_color
+        self.draw_button()
+
 class ToDoApp:
     def __init__(self, root):
         self.root = root
@@ -132,60 +200,43 @@ class ToDoApp:
 
         # self.prompt_label.configure(bg=colours['bg_secondary'], fg=colours['text_primary'])
         # self.title_label.configure(bg=colours['bg_primary'], fg=colours['text_primary'])
-
-        self.entry.configure(
-            bg=colours['surface'], 
-            fg=colours['text_primary'], 
-            insertbackground=colours['text_primary'],
-            highlightbackground=colours['border'],
-            highlightcolor=colours['accent'],
+        if hasattr(self, 'entry'):
+            self.entry.configure(
+                bg=colours['surface'], 
+                fg=colours['text_primary'], 
+                insertbackground=colours['text_primary'],
+                highlightbackground=colours['border'],
+                highlightcolor=colours['accent'],
             )
-        
-        self.listbox.configure(
-            bg=colours['surface'],
-            fg=colours['text_primary'],
-            selectbackground=colours['select_bg'],
-            selectforeground=colours['text_primary'],
-            highlightbackground=colours['border'],
-            highlightcolor=colours['accent'],
+        if hasattr(self, 'listbox'):
+            self.listbox.configure(
+                bg=colours['surface'],
+                fg=colours['text_primary'],
+                selectbackground=colours['select_bg'],
+                selectforeground=colours['text_primary'],
+                highlightbackground=colours['border'],
+                highlightcolor=colours['accent'],
         )
 
-         # Update all buttons
-        self.add_button.configure(
-            bg=colours['button_primary'], 
-            fg=colours['text_primary'],
-            activebackground=colours['hover'],
-            activeforeground=colours['text_primary'],
-        )
-        
-        self.complete_button.configure(
-            bg=colours['success'], 
-            fg='#FFFFFF',
-            activebackground=colours['hover'],
-            activeforeground=colours['text_primary'],
-        )
-        
-        self.import_last_week_button.configure(
-            bg=colours['button_secondary'], 
-            fg=colours['text_primary'],
-            activebackground=colours['hover'],
-            activeforeground=colours['text_primary'],
-        )
-        
-        self.last_week_button.configure(
-            bg=colours['button_secondary'], 
-            fg=colours['text_primary'],
-            activebackground=colours['hover'],
-            activeforeground=colours['text_primary'],
-        )
-       
-        mode_emoji = "☀️" if self.dark_mode else "🌙"
-        self.toggle_button.configure(
-            text=mode_emoji,
-            bg=colours['surface'],
-            fg=colours['accent'],
-            activebackground=colours['hover'],
-            activeforeground=colours['accent'],
+        #Button Updatesssssss
+        if hasattr(self, 'add_button'):
+            self.add_button.update_colors(colours['accent'], '#FFFFFF', colours['accent_hover'])
+        if hasattr(self, 'complete_button'):
+            self.complete_button.update_colors(colours['success'], '#FFFFFF', colours['success_hover'])
+        if hasattr(self, 'import_last_week_button'):
+            self.import_last_week_button.update_colors(colours['button_secondary'], colours['text_primary'], colours['hover'])
+        if hasattr(self, 'last_week_button'):
+            self.last_week_button.update_colors(colours['button_secondary'], colours['text_primary'], colours['hover'])
+
+    
+       if hasattr(self, 'toggle_button'):
+            mode_emoji = "☀️" if self.dark_mode else "🌙"
+            self.toggle_button.configure(
+                text=mode_emoji,
+                bg=colours['surface'],
+                fg=colours['accent'],
+                activebackground=colours['hover'],
+                activeforeground=colours['accent'],
         )
 
     
@@ -193,31 +244,12 @@ class ToDoApp:
         self.dark_mode = not self.dark_mode
         self.apply_current_theme()
 
-        # Update button text
-        mode_text = "Light Mode" if self.dark_mode else "Dark Mode"
-        self.toggle_button.configure(text=f"Switch to {mode_text}")
-    
-    def create_rounded_button(self, parent, text, command, bg_color, widft=140, height=35):
-        button = tk.Button (
-            parent,
-            text=text,
-            command=command,
-            font=FONTS['button'],
-            bg=bg_color,
-            fg=self.get_current_colours()['text_primary'],
-            activebackground=self.get_current_colours()['hover'],
-            activeforeground=self.get_current_colours()['text_primary'],
-            relief="flat",
-            bd=0,
-            padx=SPACING['md'],
-            pady=SPACING['sm'],
-            cursor="hand2"
-        )
-        return button
 
     def create_main_ui(self):
-        self.frame = tk.Frame(self.root, bg="#fef6e4")
-        self.frame.pack(padx=SPACING['lg'], pady=SPACING['lg'], fill="both", expand=True)
+        colours = self.get_current_colours()
+
+        self.main_container = tk.Frame(self.root, bg=colours['bg_primary'])
+        
         
         today_prompt = random.choice(PROMPTS)
         self.prompt_label = tk.Label(
