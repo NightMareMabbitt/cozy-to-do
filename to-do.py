@@ -249,7 +249,23 @@ class ToDoApp:
         colours = self.get_current_colours()
 
         self.main_container = tk.Frame(self.root, bg=colours['bg_primary'])
-        
+        self.main_container.pack(fill= "both", expand=True, padx=20, pday=20)
+
+        self.header_frame = tk.Frame(self.main_container, bg=colours['bg_primary'])
+        self.header_frame.pack(fill="x", pady=(0, SPACING['lg']))
+
+        from datetime import datetime
+        today_str = datetime.now().strftime("%A, %B %d")
+        self.date_label = tk.Label(
+            self.header_frame,
+            text=today_str.upper(),
+            font=FONTS['small'],
+            fg=colours['text_muted'],
+            bg=colours['bg_primary'],
+        )
+        self.date_label.pack(pady=(0, SPACING['xs']))
+
+
         
         today_prompt = random.choice(PROMPTS)
         self.prompt_label = tk.Label(
@@ -263,80 +279,160 @@ class ToDoApp:
 
         self.prompt_label.pack(pady=(SPACING['md'], SPACING['sm']))
 
+        mode_emoji = "☀️" if self.dark_mode else "🌙"
+        self.toggle_button = tk.Button(
+            self.header_frame, 
+            text=mode_emoji,
+            command=self.toggle_theme,
+            font=('Arial', 16),
+            bg=colours['surface'],
+            fg=colours['accent'],
+            activebackground=colours['hover'],
+            activeforeground=colours['accent'],
+            relief="flat",
+            bd=0,
+            width=3,
+            height=1,
+            cursor="hand2"
+        )
+        self.toggle_button.place(relx=1.0, rely=0.0, anchor="ne")
+
+        self.content_card = tk.Frame(
+            self.main_contaiiner,
+            bg=colours['card'],
+            relief="flat",
+            bd=0
+        )
+        self.content_card.pack(fill="both", expand=True)
+
+        self.input_section = tk.Frame(self.content_card, bg=colours['card'])
+        self.input_section.pack(pady=SPACING['lg'], padx=SPACING['md'], fill="x")
+
         self.entry = tk.Entry(
             self.frame,
             width=40,
             font=FONTS['body'],
-            bg="#ffffff",
-            fg="#333",
-            insertbackground="#333",
-            bd=2,
+            bg=colours['surface'],
+            fg=colours['text_primary'],
+            insertbackground=colours['accent'],
+            bd=0,
             relief="flat",
             highlightthickness=2,
-            highlightcolor="#D4A574",
+            highlightcolor=colours['accent'],
+            highlightbackground=colours['border'],
         )
-        self.entry.pack(pady=(SPACING['sm'], SPACING['xs']))
+
+        self.entry.pack(fill="x", ipday=12)
         self.entry.bind("<Return>", self.add_goal_event)
 
-        colours = self.get_current_colours()
+        add_btn_container = tk.Frame(self.input_section, bg=colours['card'])
+        add_btn_container.pack(pady=(SPACING['sm', 0]))
+
         self.add_button = self.create_rounded_button(
-            self.frame, "Add Goal", self.add_goal, colours['button_primary']
+            add_btn_container,
+            "Add Goal",
+            self.add_goal,
+            colours['accent'],
+            '#FFFFFF',
+            colours['accent_hover'],
+            width=200,
+            height=42
         )
-        self.add_button.pack(pady=(SPACING['xs'], SPACING['md']))
+        self.add_button.pack()
 
-        listbox_frame = tk.Frame(self.frame, bg=colours['bg_primary'])
-        listbox_frame.pack(pady=SPACING['sm'], fill="both", expand=True)
+        seperator = tk.Frame(self.content_card, bg=colours['border'], height=1)
+        seperator.pack(fill="x", pady=SPACING['md'])
 
-        scrollbar = tk.Scrollbar(listbox_frame)
+        self.list_section - tk.Frame(self.content_card, bg=colours['card'])
+        self.list_section.pack(fill="x", padx=SPACING['lg'], pady=SPACING['md'])
+
+        self.empty_label = tk.Label(
+            self.list_section,
+            text="No goals yet, add one :)",
+            font= FONTS['body'],
+            fg=colours['text_muted'],
+            bg=colours['card'],
+        )
+
+        scrollbar = tk.Scrollbar(self.list_section)
         scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
 
         self.listbox = tk.Listbox(
-            listbox_frame,
+            self.list_section,
             yscrollcommand=scrollbar.set,
-            width= 50,
-            height=12, 
             font=FONTS['body'],
-            bg="#ffffff",
-            fg="#333",
-            selectbackground="#d3e4cd",
-            selectforeground="#333",
+            bg=colours['surface'],
+            fg=colours['text_primary'],
+            selectbackground=colours['select_bg'],
+            selectforeground=colours['text_primary'],
             relief="flat",
             highlightthickness=2,
-            highlightcolor="#D4A574",
+            highlightcolor=colours['accent'],
+            highlightbackground=colours['border'],
             bd=0,
+            selectmode=tk.MULTIPLE,
         )
 
-        self.listbox.pack(side=tk.LEFT, fill="both", expand=True, padx=(0,2)) 
+        self.listbox.pack(side=tk.LEFT, fill="both", expand=True) 
         scrollbar.config(command=self.listbox.yview)
 
-        button_frame = tk.Frame(self.frame, bg=colours['bg_primary'])
-        button_frame.pack(pady=SPACING['md'], fill='x')
+        self.button_section = tk>frame(slelf.content_card, bg=colours['card'])
+        self.button_section.pack(pady=SPACING['lg'], padx=SPACING['lg'], fill='x')
 
-        self.complete_button = self.create_rounded_button(
-            button_frame, "Mark Complete", self.mark_complete, colours['success']
+        self.complete_button = RoundedButton(
+            complete_container,
+            "Mark as Complete",
+            self.mark_complete,
+            colours['success'],
+            '#FFFFFF',
+            colours['success_hover'],
+            width=240,
+            height=42
         )
-        self.complete_button.pack(pady=SPACING['xs'])
+        self.complete_button.pack()
 
-        self.import_last_week_button = self.create_rounded_button(
-            button_frame, "Import Last Weeks Goals", self.import_last_week_goals, colours['button_secondary']
+        seperator2 = tk.Frame(self.button_section, bg=colours['border'], height=1)
+        seperator2.pack(fill="x", pady=SPACING['md'])
+
+        import_container = tk.Frame(self.button_section, bg=colours['card'])
+        import_container.pack(pady=(0, SPACING['xs']))
+
+        self.import_last_week_button = RoundedButton(
+            import_container,
+            "Import Last Weeks Goals",
+            self.import_last_week_goals,
+            colours['button_secondary'],
+            colours['text_primary'],
+            colours['hover'],
+            width=240,
+            height=38
         )
-        self.import_last_week_button.pack(pady=SPACING['xs'])
 
-        self.last_week_button = self.create_rounded_button(
-            button_frame, "View Last Weeks Goals", self.show_last_week_overlay, colours['button_secondary']
+        self.import_last_week_button.pack()
+
+        view_container = tk.Frame(self.button_section, bg=colours['card'])
+        view_container.pack()
+
+        self.last_week_button = RoundedButton(
+            view_container,
+            "View Last Week's Goals",
+            self.show_last_week_overlay,
+            colours['button_secondary'],
+            colours['text_primary'],
+            colours['hover'],
+            width=240,
+            height=38
         )
-        self.last_week_button.pack(pady=SPACING['xs'])
-
-        mode_text = "Light mode" if self.dark_mode else "Dark Mode"
-        self.toggle_button = self.create_rounded_button(
-            button_frame, f"Switch to {mode_text}", self.toggle_theme, colours['accent']
-        )
-        self.toggle_button.pack(pady=(SPACING['md'], SPACING['xs']))
-
-        self.frame.columnconfigure(0, weight=1)
+        self.last_week_button.pack()
 
         self.load_today_goals()
         self.suggest_yesterday_goals()
+    
+    def update_empty_state(self):
+        if self.listbox.size() == 0:
+            self.empty_label.pack()
+        else:
+            self.empty_label.pack_forget()
 
 
     def load_today_goals(self):
