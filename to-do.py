@@ -77,8 +77,8 @@ SPACING = {
     'xl': 32,
 }
 
-class roundedButton(tk.Canvas):
-    def _init_(self, parent, text, command, bg_color, fg_color, hover_color, **kwargs):
+class RoundedButton(tk.Canvas):
+    def __init__(self, parent, text, command, bg_color, fg_color, hover_color, **kwargs):
         width = kwargs.pop('width', 220)
         height = kwargs.pop('height', 44)
         super().__init__(parent, width=width, height=height, bg=parent['bg'], highlightthickness=0, **kwargs)
@@ -100,8 +100,8 @@ class roundedButton(tk.Canvas):
         self.delete("all")
         color = self.hover_color if self.is_hovered else self.bg_color
 
-        x0, y0, x1, y1 = 2, 2, self.iwinf_reqwidth() -2, self.winfo_reqheight() -2
-        radus = 10
+        x0, y0, x1, y1 = 2, 2, self.winfo_reqwidth() -2, self.winfo_reqheight() -2
+        radius = 10
 
         self.create_arc(x0, y0, x0 + radius*2, y0 + radius*2, start=90, extent=90, fill=color, outline='')
         self.create_arc(x1 - radius*2, y0, x1, y0 + radius*2, start=0, extent=90, fill=color, outline='')
@@ -196,10 +196,7 @@ class ToDoApp:
             self.date_label.configure(bg=colours['bg_primary'], fg=colours['text_secondary'])
 
 
-        # self.frame.configure(bg=colours['bg_secondary'])
-
-        # self.prompt_label.configure(bg=colours['bg_secondary'], fg=colours['text_primary'])
-        # self.title_label.configure(bg=colours['bg_primary'], fg=colours['text_primary'])
+        
         if hasattr(self, 'entry'):
             self.entry.configure(
                 bg=colours['surface'], 
@@ -227,9 +224,7 @@ class ToDoApp:
             self.import_last_week_button.update_colors(colours['button_secondary'], colours['text_primary'], colours['hover'])
         if hasattr(self, 'last_week_button'):
             self.last_week_button.update_colors(colours['button_secondary'], colours['text_primary'], colours['hover'])
-
-    
-       if hasattr(self, 'toggle_button'):
+        if hasattr(self, 'toggle_button'):
             mode_emoji = "☀️" if self.dark_mode else "🌙"
             self.toggle_button.configure(
                 text=mode_emoji,
@@ -249,7 +244,7 @@ class ToDoApp:
         colours = self.get_current_colours()
 
         self.main_container = tk.Frame(self.root, bg=colours['bg_primary'])
-        self.main_container.pack(fill= "both", expand=True, padx=20, pday=20)
+        self.main_container.pack(fill= "both", expand=True, padx=20, pady=20)
 
         self.header_frame = tk.Frame(self.main_container, bg=colours['bg_primary'])
         self.header_frame.pack(fill="x", pady=(0, SPACING['lg']))
@@ -269,7 +264,7 @@ class ToDoApp:
         
         today_prompt = random.choice(PROMPTS)
         self.prompt_label = tk.Label(
-            self.frame,
+            self.header_frame,
             text = today_prompt,
             font= FONTS['title'],
             justify="center",
@@ -298,7 +293,7 @@ class ToDoApp:
         self.toggle_button.place(relx=1.0, rely=0.0, anchor="ne")
 
         self.content_card = tk.Frame(
-            self.main_contaiiner,
+            self.main_container,
             bg=colours['card'],
             relief="flat",
             bd=0
@@ -309,7 +304,7 @@ class ToDoApp:
         self.input_section.pack(pady=SPACING['lg'], padx=SPACING['md'], fill="x")
 
         self.entry = tk.Entry(
-            self.frame,
+            self.input_section,
             width=40,
             font=FONTS['body'],
             bg=colours['surface'],
@@ -322,13 +317,13 @@ class ToDoApp:
             highlightbackground=colours['border'],
         )
 
-        self.entry.pack(fill="x", ipday=12)
+        self.entry.pack(fill="x", pady=12)
         self.entry.bind("<Return>", self.add_goal_event)
 
         add_btn_container = tk.Frame(self.input_section, bg=colours['card'])
-        add_btn_container.pack(pady=(SPACING['sm', 0]))
+        add_btn_container.pack(pady=(SPACING['sm'], 0))
 
-        self.add_button = self.create_rounded_button(
+        self.add_button = RoundedButton(
             add_btn_container,
             "Add Goal",
             self.add_goal,
@@ -343,7 +338,7 @@ class ToDoApp:
         seperator = tk.Frame(self.content_card, bg=colours['border'], height=1)
         seperator.pack(fill="x", pady=SPACING['md'])
 
-        self.list_section - tk.Frame(self.content_card, bg=colours['card'])
+        self.list_section = tk.Frame(self.content_card, bg=colours['card'])
         self.list_section.pack(fill="x", padx=SPACING['lg'], pady=SPACING['md'])
 
         self.empty_label = tk.Label(
@@ -376,8 +371,11 @@ class ToDoApp:
         self.listbox.pack(side=tk.LEFT, fill="both", expand=True) 
         scrollbar.config(command=self.listbox.yview)
 
-        self.button_section = tk>frame(slelf.content_card, bg=colours['card'])
+        self.button_section = tk.Frame(self.content_card, bg=colours['card'])
         self.button_section.pack(pady=SPACING['lg'], padx=SPACING['lg'], fill='x')
+
+        complete_container = tk.Frame(self.button_section, bg=colours['card'])
+        complete_container.pack(pady=(0, SPACING['sm']))
 
         self.complete_button = RoundedButton(
             complete_container,

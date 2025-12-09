@@ -777,5 +777,35 @@
     "date": "2025-11-07",
     "text": "for the ross' of the world",
     "completed": true
+  },
+  {
+    "date": "2025-12-09",
+    "text": "fix some stuffs",
+    "completed": true
+  },
+  {
+    "date": "2025-12-09",
+    "text": "fix dark mode as still weord",
+    "completed": false
+  },
+  {
+    "date": "2025-12-09",
+    "text": "add some spell check",
+    "completed": false
+  },
+  {
+    "date": "2025-12-09",
+    "text": "butons stil rouch round the edges",
+    "completed": false
+  },
+  {
+    "date": "2025-12-09",
+    "text": "rough",
+    "completed": false
+  },
+  {
+    "date": "2025-12-09",
+    "text": "allow for goal editing",
+    "completed": false
   }
 ]
