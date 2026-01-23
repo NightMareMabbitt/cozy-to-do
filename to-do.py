@@ -1,5 +1,7 @@
 import tkinter as tk
 from tkinter import messagebox, Scrollbar, Listbox
+from ctypes import windll
+from datetime import datetime, timedelta
 from goal_manager import GoalManager
 import random
 import sys
@@ -140,6 +142,14 @@ class ToDoApp:
         self.root.configure(bg="#fef6e4")
         self.root.geometry("580x720")
         self.root.minsize(480, 600)
+
+        if sys.platform == 'win32':
+            try:
+                from ctypes import windll
+                windll.shcore.SetProcessDpiAwareness(2)
+            except: 
+                pass 
+
         
         self.theme = CozyTheme()
         self.dark_mode = self.detect_sytem_dark_mode()
@@ -473,15 +483,27 @@ class ToDoApp:
         self.load_today_goals()
 
     def suggest_yesterday_goals(self):
-        incomplete = self.goal_manager.get_incomplete_yesterday_goals()
-        if incomplete:
-            msg="You didn't complete these yesterday:\n\n"
-            msg += "\n".join(f"- {g}" for g in incomplete) 
-            msg += "\n\nAdd them to today?"
-            if messagebox.askyesno("Suggestions ", msg):
-                self.goal_manager.import_yesterday_goals()
-                self.load_today_goals()
-    
+        try:
+            yesterday = (datetime.now() - timedelta(days=1)).strftime("%Y-%m-%d")
+            incomplete_goals = [
+                g for g in self.goal_manager.goals
+                if g["date"] == yesterday and not g["completed"]
+            ]
+            
+            if incomplete_goals:
+                incomplete_texts = [g["text"] for g in incomplete_goals]
+                msg = "You didn't complete these yesterday:\n\n"
+                msg += "\n".join(f"• {text}" for text in incomplete_texts) 
+                msg += "\n\nAdd them to today?"
+                
+                if messagebox.askyesno("Yesterday's Goals", msg):
+                    imported = self.goal_manager.get_incomplete_yesterday_goals()
+                    self.load_today_goals()
+        except Exception as e:
+            # If there's any error, skip this feature silently
+            pass
+        
+
     def show_last_week_goals(self):
         last_week = self.goal_manager.get_last_week_goals()
         self.listbox.delete(0, tk.END)
