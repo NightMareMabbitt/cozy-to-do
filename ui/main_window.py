@@ -8,7 +8,7 @@ from config.theme import CozyTheme
 from config.fonts import FONTS
 from config.constants import SPACING, PROMPTS
 
-from ui.widgets import RoundedButtton, EmptyStateLabel
+from ui.widgets import RoundedButton, EmptyStateLabel
 from ui.dialogs import LastWeeksGoalsDialog
 from managers.goal_manager import GoalManager
 from utils.system import detect_sytem_dark_mode, setup_dpi_awareness
@@ -120,58 +120,61 @@ class ToDoApp:
             self.root.after(2000, self.check_system_theme)
 
     def create_main_ui(self):
-       colours = self.get_current_colours()
-
-       self.main_container = tk.Frame(self.root, bg=colours['bg_primary'])
-       self.main_container.pack(fill="both", expand=True, padx=20, pady=20)
-
-       self.header_frame = tk.Frame(self.main_container, bg=colours['bg_primary'])
-       self.header_frame.pack(fill="x", pady=(0, SPACING['lg']))
-
-       today_str = datetime.now().strftime("%A, %B %d")
-       self.date_label = tk.Label(
-        self.header_frame,
-        text=today_str.upper(),
-        font=FONTS['label'],
-        fg=colours['text_muted'],
-        bg=colours['bg_primary']
-       )
-
-       self.date_label.pack(pady=(0, SPACING['xs']))
-
-       today_prompt = random.choice(PROMPTS)
-       self.prompt_label = tk.Label(
-        self.header_frame, 
-        text=today_prompt,
-        font=FONTS['title']
-        justify="center",
-        wrapLemgth=540,
-        bg=colours['bg_primary'],
-        fg=colours['text_primary']
-       )
-
-       self.prompt_label.pack(pady=(0, SPACING['md']))
-
-       mode_emoji = "☀️" if self.dark_mode else "🌙"
-       self.toggle_button = tk.Button(
-        self.header_frame,
-        text=mode_emoji,
-        command=self.toggle_theme,
-        font=('Arial', 16)
-        bg=colours['surface'],
-        fg=colours['accent'],
-        activebackground=colours['hover'],
-        activeforeground=colours['accent'],
-        relief="flat",
-        bd=0,
-        width=3,
-        height=1,
-        cursor="hand2"
-       )
+        colours = self.get_current_colours()
         
-        self.toggle_button.place(relx=1.0, rely=0, anchor= "ne")
+        # Main container with padding
+        self.main_container = tk.Frame(self.root, bg=colours['bg_primary'])
+        self.main_container.pack(fill="both", expand=True, padx=20, pady=20)
+        
+        # Header section
+        self.header_frame = tk.Frame(self.main_container, bg=colours['bg_primary'])
+        self.header_frame.pack(fill="x", pady=(0, SPACING['lg']))
+        
+        # Date label
+        today_str = datetime.now().strftime("%A, %B %d")
+        self.date_label = tk.Label(
+            self.header_frame,
+            text=today_str.upper(),
+            font=FONTS['small'],
+            fg=colours['text_muted'],
+            bg=colours['bg_primary']
+        )
+        self.date_label.pack(pady=(0, SPACING['xs']))
+        
+        # Prompt
+        today_prompt = random.choice(PROMPTS)
+        self.prompt_label = tk.Label(
+            self.header_frame,
+            text=today_prompt,
+            font=FONTS['title'],
+            justify="center",
+            wraplength=540, 
+            bg=colours['bg_primary'],
+            fg=colours['text_primary']
+        )
+        self.prompt_label.pack(pady=(0, SPACING['md']))
 
-        sefl.content_card = tk.Frame(
+        # Theme toggle (top right)
+        mode_emoji = "☀️" if self.dark_mode else "🌙"
+        self.toggle_button = tk.Button(
+            self.header_frame,
+            text=mode_emoji,
+            command=self.toggle_theme,
+            font=('Arial', 16),
+            bg=colours['surface'],
+            fg=colours['accent'],
+            activebackground=colours['hover'],
+            activeforeground=colours['accent'],
+            relief="flat",
+            bd=0,
+            width=3,
+            height=1,
+            cursor="hand2"
+        )
+        self.toggle_button.place(relx=1.0, rely=0, anchor="ne")
+
+
+        self.content_card = tk.Frame(
             self.main_container, 
             bg=colours['card'], 
             bd=0, 
@@ -180,7 +183,7 @@ class ToDoApp:
         self.content_card.pack(fill="both", expand=True)
 
         self.input_section = tk.Frame(self.content_card, bg=colours['card'])
-        self.input_section.pack(pady=(SPACING['lg'], SPACING['md'], padx=SPACING['lg'], fill="x"))
+        self.input_section.pack(pady=(SPACING['lg'], SPACING['md']), padx=SPACING['lg'], fill="x")
 
         self.entry = tk.Entry(
             self.input_section,
@@ -319,12 +322,12 @@ class ToDoApp:
         self.listbox.delete(o, tk.END)
         self.index_to_text = {}
 
-        for idx, goal on enumerate(self.goal_manager.get_todays_goals()):
+        for idx, goal in enumerate(self.goal_manager.get_todays_goals()):
             text = goal['text']
             if "imported_from" in goal:
                 display = f"{text}"
             else:
-                display f". {text}"
+                display = f". {text}"
             self.listbox.insert(tk.END, display)
             self,index_to_text[idx] = text
 
@@ -396,7 +399,7 @@ class ToDoApp:
                     self.load_today_goals()
                 
         except Exception as e:
-        pass
+            pass
 
     def import_last_week_goals(self):
         imported = self.goal_manager.import_last_week_goals()
@@ -461,7 +464,7 @@ class ToDoApp:
         )
 
         self.past_listbox,pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
-        scrollbar.config=(command=self.past_listbox.yview)
+        scrollbar.config(command=self.past_listbox.yview)
 
         #Load goals
         past_goals = self.goal_manager.get_incomplete_last_week_goals()
@@ -474,7 +477,7 @@ class ToDoApp:
         
         #Buttons
         btn_frame = tk.Frame(content, bg=colours['card'])
-        btn_frame.pack(padx=SPACING['lg'], pady=(0, SPACING['lg'], fill="x"))
+        btn_frame.pack(padx=SPACING['lg'], pady=(0, SPACING['lg']), fill= "x" )
 
         import_container = tk.Frame(btn_frame, bg=colours['card'])
         import_container.pack(pady=(0, SPACING['xs']))
@@ -482,7 +485,7 @@ class ToDoApp:
         import_btn = RoundedButton(
             import_container,
             "Import Selected",
-            lambda: self.import_selected_goals(overlay)
+            lambda: self.import_selected_goals(overlay),
             colours['accent'],
             '#FFFFFF',
             colours['accent_hover'],

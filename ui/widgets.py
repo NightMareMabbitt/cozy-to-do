@@ -1,11 +1,18 @@
 import tkinter as tk
 from config.fonts import FONTS
 
-class RoundedButtton(tk.Canvas):
+class RoundedButton(tk.Canvas):
     def __init__(self, parent, text, command, bg_color, fg_color, hover_color, **kwargs):
         width = kwargs.pop('width', 220)
         height = kwargs.pop('height', 44)
-        super().__init__(parent, width=width, height=height, bg=parent['bg'], highlightthickness=0, **kwargs)
+        super().__init__(
+            parent, 
+            width=width, 
+            height=height, 
+            bg=parent['bg'], 
+            highlightthickness=0, 
+            **kwargs
+        )
 
         self.command = command
         self.bg_color = bg_color 

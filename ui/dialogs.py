@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import Listbox, Scrollbar
 from config.fonts import FONTS
 from config.constants import SPACING
-from ui.widgets import RoundedButtton
+from ui.widgets import RoundedButton
 
 class LastWeeksGoalsDialog:
 
