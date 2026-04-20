@@ -17,19 +17,18 @@ from utils.system import detect_sytem_dark_mode, setup_dpi_awareness
 class ToDoApp:
     def __init__(self, root):
         self.root = root
+        self.root.title("Cozy To-Do App 🌿")
+        self.root.geometry("600x750")
+        self.root.minsize(500, 650)
+
         setup_dpi_awareness()
 
-        self.root.title("Cozy To-Do App 🌿")
         self.theme = CozyTheme()
         self.dark_mode = detect_sytem_dark_mode()
 
         self.goal_manager = GoalManager()
         self.today = self.goal_manager.today
         self.index_to_text = {}
-
-        # top-level container
-        self.main_container = tk.Frame(self.root)
-        self.main_container.pack(fill="both", expand=True)
 
         self.create_main_ui()
         self.apply_current_theme()
@@ -43,17 +42,65 @@ class ToDoApp:
     def apply_current_theme(self):
         colours = self.get_current_colours()
         self.root.configure(bg=colours['bg_primary'])
-        self.main_container.configure(bg=colours['bg_primary'])
+     
 
         # update header widgets if they exist
+        if hasattr(self, 'main_container'):
+            self.main_container.configure(bg=colours['bg_primary'])
         if hasattr(self, 'header_frame'):
             self.header_frame.configure(bg=colours['bg_primary'])
-        if hasattr(self, 'date_label'):
-            self.date_label.configure(bg=colours['bg_primary'], fg=colours['text_muted'])
+        if hasattr(self, 'content_card'):
+            self.content_card.configure(bg=colours['card'])
+        if hasattr(self, 'input_section'):
+            self.input_section.configure(bg=colours['card'])
+        if hasattr(self, 'list_section'):
+            self.list_section.configure(bg=colours['card'])
+        if hasattr(self, 'button_section'):
+            self.button_section.configure(bg=colours['card'])
+
         if hasattr(self, 'prompt_label'):
             self.prompt_label.configure(bg=colours['bg_primary'], fg=colours['text_primary'])
+        if hasattr(self, 'date_label'):
+            self.date_label.configure(bg=colours['bg_primary'], fg=colours['text_muted'])
+
+        if hasattr(self, 'entry'):
+            self.entry.configure(
+                bg=colours['surface'], 
+                fg=colours['text_primary'], 
+                insertbackground=colours['accent'],
+                highlightbackground=colours['border'],
+                highlightcolor=colours['accent'],
+            )
+        
+        if hasattr(self, 'listbox'):
+            self.listbox.configure(
+                bg=colours['surface'],
+                fg=colours['text_primary'],
+                selectbackground=colours['select_bg'],
+                selectforeground=colours['text_primary'],
+                highlightbackground=colours['border'],
+                highlightcolor=colours['accent'],
+            )
+
+        # Update custom buttons
+        if hasattr(self, 'add_button'):
+            self.add_button.update_colors(colours['accent'], '#FFFFFF', colours['accent_hover'], colours['card'])
+        if hasattr(self, 'complete_button'):
+            self.complete_button.update_colors(colours['success'], '#FFFFFF', colours['success_hover'], colours['card'])
+        if hasattr(self, 'import_last_week_button'):
+            self.import_last_week_button.update_colors(colours['button_secondary'], colours['text_primary'], colours['hover'], colours['card'])
+        if hasattr(self, 'last_week_button'):
+            self.last_week_button.update_colors(colours['button_secondary'], colours['text_primary'], colours['hover'], colours['card'])
+        
         if hasattr(self, 'toggle_button'):
-            self.toggle_button.configure(bg=colours['surface'], fg=colours['accent'], activebackground=colours['hover'], activeforeground=colours['accent'])
+            mode_emoji = "☀️" if self.dark_mode else "🌙"
+            self.toggle_button.configure(
+                text=mode_emoji,
+                bg=colours['surface'],
+                fg=colours['accent'],
+                activebackground=colours['hover'],
+                activeforeground=colours['accent'],
+            )
 
     def toggle_theme(self):
         self.dark_mode = not self.dark_mode
@@ -73,186 +120,408 @@ class ToDoApp:
             self.root.after(2000, self.check_system_theme)
 
     def create_main_ui(self):
-        self._create_header()
-        self._create_content_card()
-        self._create_input_section()
-        self._create_list_section()
-        self._create_button_section()
+       colours = self.get_current_colours()
 
-        # placeholders for real loading logic
-        if hasattr(self.goal_manager, 'load_today_goals'):
-            try:
-                self.goal_manager.load_today_goals()
-            except Exception:
-                pass
+       self.main_container = tk.Frame(self.root, bg=colours['bg_primary'])
+       self.main_container.pack(fill="both", expand=True, padx=20, pady=20)
 
-    def _create_header(self):
-        colours = self.get_current_colours()
+       self.header_frame = tk.Frame(self.main_container, bg=colours['bg_primary'])
+       self.header_frame.pack(fill="x", pady=(0, SPACING['lg']))
 
-        self.header_frame = tk.Frame(self.main_container, bg=colours['bg_primary'])
-        self.header_frame.pack(fill="x", pady=(0, SPACING['lg']))
+       today_str = datetime.now().strftime("%A, %B %d")
+       self.date_label = tk.Label(
+        self.header_frame,
+        text=today_str.upper(),
+        font=FONTS['label'],
+        fg=colours['text_muted'],
+        bg=colours['bg_primary']
+       )
 
-        today_str = datetime.now().strftime("%A, %B %d")
-        self.date_label = tk.Label(
-            self.header_frame,
-            text=today_str.upper(),
-            font=FONTS['small'],
-            fg=colours['text_muted'],
-            bg=colours['bg_primary'],
+       self.date_label.pack(pady=(0, SPACING['xs']))
+
+       today_prompt = random.choice(PROMPTS)
+       self.prompt_label = tk.Label(
+        self.header_frame, 
+        text=today_prompt,
+        font=FONTS['title']
+        justify="center",
+        wrapLemgth=540,
+        bg=colours['bg_primary'],
+        fg=colours['text_primary']
+       )
+
+       self.prompt_label.pack(pady=(0, SPACING['md']))
+
+       mode_emoji = "☀️" if self.dark_mode else "🌙"
+       self.toggle_button = tk.Button(
+        self.header_frame,
+        text=mode_emoji,
+        command=self.toggle_theme,
+        font=('Arial', 16)
+        bg=colours['surface'],
+        fg=colours['accent'],
+        activebackground=colours['hover'],
+        activeforeground=colours['accent'],
+        relief="flat",
+        bd=0,
+        width=3,
+        height=1,
+        cursor="hand2"
+       )
+        
+        self.toggle_button.place(relx=1.0, rely=0, anchor= "ne")
+
+        sefl.content_card = tk.Frame(
+            self.main_container, 
+            bg=colours['card'], 
+            bd=0, 
+            relief="flat"
         )
-        self.date_label.pack(pady=(0, SPACING['xs']))
+        self.content_card.pack(fill="both", expand=True)
 
-        today_prompt = random.choice(PROMPTS)
-        self.prompt_label = tk.Label(
-            self.header_frame,
-            text=today_prompt,
-            font=FONTS['title'],
-            justify="center",
-            wraplength=500,
-            bg=colours['bg_primary'],
-            fg=colours['text_primary'],
-        )
+        self.input_section = tk.Frame(self.content_card, bg=colours['card'])
+        self.input_section.pack(pady=(SPACING['lg'], SPACING['md'], padx=SPACING['lg'], fill="x"))
 
-        self.prompt_label.pack(pady=(SPACING['md'], SPACING['sm']))
-
-        mode_emoji = "☀️" if self.dark_mode else "🌙"
-        self.toggle_button = tk.Button(
-            self.header_frame,
-            text=mode_emoji,
-            command=self.toggle_theme,
-            font=('Arial', 16),
+        self.entry = tk.Entry(
+            self.input_section,
+            font=FONTS['body'],
             bg=colours['surface'],
-            fg=colours['accent'],
-            activebackground=colours['hover'],
-            activeforeground=colours['accent'],
-            relief="flat",
+            fg=colours['text_primary'],
+            insertbackground=colours['accent'],
             bd=0,
-            width=3,
-            height=1,
-            cursor="hand2"
+            relief="flat",
+            highlightthickness=2,
+            highlightbackground=colours['border'],
+            highlightcolor=colours['accent'],
         )
-        self.toggle_button.place(relx=1.0, rely=0.0, anchor="ne")
+        self.entry.pack(fill="x", ipady=12)
+        self.entry.bind("<Return>",self.add_goal_event)
 
-    def _create_content_card(self):
-        # placeholder for content area
-        colours = self.get_current_colours()
-        self.content_card = tk.Frame(self.main_container, bg=colours['card'], bd=0)
-        self.content_card.pack(fill="both", expand=False, padx=SPACING['md'], pady=(0, SPACING['md']))
+        add_btn_container = tk.Frame(self.input_section, bg=colours['card'])
+        add_btn_container.pack(pady=(SPACING['sm'], 0))
 
-    def _create_input_section(self):
-        # placeholder input
-        colours = self.get_current_colours()
-        frame = tk.Frame(self.content_card, bg=colours['card'])
-        frame.pack(fill="x", pady=SPACING['sm'])
+        self.add_button = RoundedButton(
+            add_btn_container, 
+            "Add Goal", 
+            self.add_goal, 
+            colours['accent'],
+            '#FFFFFF',
+            colours['accent_hover'],
+            width=200,
+            height=42,
+            parent_bg=colours['card']
+        )
 
-        self.input_var = tk.StringVar()
-        entry = tk.Entry(frame, textvariable=self.input_var, font=FONTS['body'], bd=1)
-        entry.pack(side=tk.LEFT, fill="x", expand=True, padx=(0, SPACING['sm']))
+        self.add_button.pack()
 
-        add_btn = tk.Button(frame, text="Add", command=self.add_goal, bg=colours['button_primary'])
-        add_btn.pack(side=tk.RIGHT)
+        seperator = tk.Frame(self.content_card, bg=colours['border-light'], height=1)
+        seperator.pack(pady=(0, SPACING['md']), padx=SPACING['lg'], fill="both", expand=True)
 
-    def _create_list_section(self):
-        colours = self.get_current_colours()
-        self.list_frame = tk.Frame(self.content_card, bg=colours['card'])
-        self.list_frame.pack(fill="both", expand=True)
+        self.list_section = tk.Frame(self.content_card, bg=colours['card'])
+        self.list_section.pack(pady=(0, SPACING['md']), padx=SPACING['lg'], fill="both", expand=True)
 
-        # listbox with scrollbar
-        scrollbar = tk.Scrollbar(self.list_frame)
+        self.empty_label = tk.Label(
+            self.list_section, 
+            text="No goals yet, add one above",
+            font=FONTS['body'],
+            fg=colours['text_muted'],
+            bg=colours['card']
+        )  
+
+        scrollbar = t.Scrollbar(self.list_section)
         scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
 
-        self.goals_listbox = tk.Listbox(
-            self.list_frame,
-            yscrollcommand=scrollbar.set,
-            selectmode=tk.MULTIPLE,
+        self.lsistbox = tk.Listbox(
+            self.list_section,
+            yscrollcommand=scrollbar.set, 
             font=FONTS['body'],
-            bg=colours['card'],
+            bg=colours['surface'],
             fg=colours['text_primary'],
-            bd=0,
-            highlightthickness=0
+            selectbackground=colours['select_bg'],
+            selectforeground=colours['text_primary'],
+            relief="flat",
+            highlightthickness=2,
+            highlightcolor=colours['accent'],
+            highlightbackground=colours['border'],
+            bd=0, 
+            selectmode=tk.MULTIPLE
         )
-        self.goals_listbox.pack(fill=tk.BOTH, expand=True)
-        scrollbar.config(command=self.goals_listbox.yview)
+        self.listbox.pack(side=tk.LEFT, fill="both", expand=True)
+        srollbar.config(command=slef.listbox.yview)
 
-        self.empty_label = EmptyStateLabel(self.list_frame, colours)
-        self.empty_label.pack(pady=SPACING['sm'])
+        self.button_section = tk.Frame(self.content_card, bg=colours['card'])
+        self.button_section.pack(pady=(0, SPACING['lg']),padx=SPACING['lg'], fill="x")
 
-    def _create_button_section(self):
-        colours = self.get_current_colours()
-        btn_frame = tk.Frame(self.main_container, bg=colours['bg_primary'])
-        btn_frame.pack(fill="x", pady=SPACING['sm'])
+        complete_container = tk.Frame(self.button_sectiom, bg=colours['card'])
+        complete_container.pack(pady=(0, SPACING['sm']))
 
-        import_btn = tk.Button(btn_frame, text="Import Last Week", command=self.show_last_week_overlay, bg=colours['button_secondary'])
-        import_btn.pack(side=tk.LEFT, padx=SPACING['sm'])
+        self.complete_button = RoundedButton(
+            complete_container, 
+            "Mark Complete", 
+            self.mark_complete, 
+            colours['success'],
+            '#FFFFFF',
+            colours['success_hover'],
+            width=240,
+            height=42,
+            parent_bg=colours['card']
+        )
+        self.complete_button.pack()
 
-        mark_btn = tk.Button(btn_frame, text="Mark Complete", command=self.mark_complete, bg=colours['button_primary'])
-        mark_btn.pack(side=tk.RIGHT, padx=SPACING['sm'])
+        button_seperator = tk.Frame(self.button_section, bg=colours['border_light'], height=1)
+        button_seperator.pack(fill="x", pady=SPACING['md'])
 
-        refresh_btn = tk.Button(btn_frame, text="Refresh", command=self.load_today_goals, bg=colours['button_secondary'])
-        refresh_btn.pack(side=tk.RIGHT, padx=SPACING['sm'])
+        import_container = tk.Frame(self.buton_section, bg=colours['card'])
+        import_container.pack(pady=(SPACING['xs'], 0))
 
-    # Event handlers (placeholders)
-    def add_goal(self):
-        text = self.input_var.get().strip() if hasattr(self, 'input_var') else ''
-        if not text:
-            messagebox.showinfo("Empty", "Please enter a goal text.")
-            return
-        try:
-            self.goal_manager.add_goal(text)
-        except Exception:
-            pass
-        self.input_var.set("")
+        self.import_last_week_button = RoundedButton(
+            import_container,
+            "Import last week's goals",
+            self.import_last_week_goals,
+            colours['button_secondary'],
+            colours['text_primary'],
+            colours['hover'],
+            width=240,
+            height=38,
+            parent_bg=colours['card']
+        )
+        self.import_last_week_button.pack()
+
+
+        view_container = tk.Frame(self.button_section, bg=colours['card'])
+        view_container.pack()
+
+        self.last_week_button = RoundedButton(
+            view_container,
+            "View last week's goals",
+            self.show_last_week_overlay,
+            colours['button_secondary'],
+            colours['text_primary'],
+            colours['hover'],
+            width=240,
+            height=38,
+            parent_bg=colours['card']
+        )
+        self.last_week_button.pack()
+
         self.load_today_goals()
+        self.suggest_yesterday_goals()
+
+
+    def update_empty_state(self):
+        if self.listboc.size() == 0:
+            self.empty_label.pack(expand=True)
+        else:
+            self.empty_label.pack_forget()
+    
+
+    def load_todays_goals(self):
+        self.listbox.delete(o, tk.END)
+        self.index_to_text = {}
+
+        for idx, goal on enumerate(self.goal_manager.get_todays_goals()):
+            text = goal['text']
+            if "imported_from" in goal:
+                display = f"{text}"
+            else:
+                display f". {text}"
+            self.listbox.insert(tk.END, display)
+            self,index_to_text[idx] = text
+
+        self.update_empty_state()
+    
+    def add_goal_event(self, event):
+        self.add_goal()
+    
+    def add_goal(self):
+        text = self.entry.get().strip()
+        if text:
+            try:
+                self.goal_manager.add_goal(text)
+                self.entry.delete(0, tk.END)
+                self.load_today_goals()
+
+                #Visual feedback
+                original_colours = (self.add_button.bg_colour, self.add_button.fg_colour, self.add_button.hover_colour)
+                success_colour = self.get_current_colours()['success']
+                self.add_button.update_colours(success_colour, '#FFFFFF', success_colour)
+                self.add_button.text = "Added!"
+                self.add_button.draw_button()
+
+                def reset():
+                    self.add_button.text = "Add Goal"
+                    self.add_button.update_colours(*original_colours)
+                
+                self.root.after(1000, reset)
+            
+            except Exception as e:
+                messagebox.showerror("Error", f"Failed to add goal: {str(e)}")
 
     def mark_complete(self):
-        if not hasattr(self, 'goals_listbox'):
+        selected =  self.listbox.curselection()
+        if not selected:
+            messagebox.showinfo("No Selection", "Please select at least one goal to mark as complete.")
             return
-        sel = self.goals_listbox.curselection()
-        texts = [self.index_to_text.get(i) for i in sel]
-        texts = [t for t in texts if t]
-        if not texts:
-            messagebox.showinfo("Select", "Please select goals to mark complete.")
-            return
-        try:
-            self.goal_manager.mark_goals_complete(texts)
-        except Exception:
-            pass
+
+        selected_texts = [self.index_to_text[i] for i in selected if i in self.index_to_text]
+        self.goal_manager.mark_goals_complete(selected_texts)
         self.load_today_goals()
+
+        original_text = self.complete_button.text
+        self.complete_button.text = "Completed!"
+        self.complete_button.draw_button()
+
+        def reset():
+            self.complete_button.text = original_text
+            self.complete_button.draw_button()
+        
+        self.root.after(1500, reset)
+
+    def suggest_yesterdays_goals(self):
+        try:
+            yesterday = (datetime.now() - timedelta(days=1)).strftime("%Y-%m-%d")
+            incomplete_goals = [
+                g for g in self.goal_manager.goals
+                if g["date"] == yesterday and not g["completed"]
+            ]
+
+            if incomplete_goals:
+                incomplete_goals = [g["text"] for g in incomplete_goals]
+                msg = "You didn't complete these goals yesterday:\n\n"
+                msg += "\n".join(f"- {text}" for text in incomplete_goals)
+                msg += "\n\nConsider adding them again today?"
+
+                if messagebox.askyesno("Yesterday's Goals", msg):
+                    imported = self.goal_manager.get_incomplete_yesterday_goals()
+                    self.load_today_goals()
+                
+        except Exception as e:
+        pass
 
     def import_last_week_goals(self):
-        try:
-            imported = self.goal_manager.import_last_week_goals()
-            count = len(imported)
-            if count:
-                messagebox.showinfo("Imported", f"Imported {count} goals from last week.")
-        except Exception:
-            messagebox.showerror("Error", "Failed to import goals.")
+        imported = self.goal_manager.import_last_week_goals()
+        if imported:
+            messagebox.showinfo("Imported", f"Imported {len(imported)} goals from last week!")
+        else:
+            messagebox.showinfo("All caught up", "No incomplete goals from last week to import!")
         self.load_today_goals()
-
+    
     def show_last_week_overlay(self):
-        dialog = LastWeeksGoalsDialog(
-            self.root,
-            self.get_current_colours(),
-            self.goal_manager,
-            self.load_today_goals
+        colours = self.get_current_colours()
+
+        overlay = tk.Toplevel(self.root)
+        overlay.title("Last Week's Goals")
+        overlay.geometry("520x600")
+        overlay.configure(bg=colours['bg_primary'])
+        overlay.transient(self.root)
+        overlay.grab_set()
+        
+
+        #Main Container
+        main = tk.Frame(overlay, bg=colours['bg_primary'])
+        main.pack(fill="both", expand=True, padx=20, pady=20)
+
+        #Header
+        header = tk.Frame(main, bg=colours['bg_primary'])
+        header.pack(fill="x", pady=(0, SPACING['lg']))
+
+        tk.Label(
+            header, 
+            text="Last Week's Goals",
+            font=FONTS['title'],
+            bg=colours['bg_primary'],
+            fg=colours['text_primary']
+        ).pack()
+
+        #Content Card
+        content= tk.Frame(main, bg=colours['card'])
+        content.pack(fill="both", expand=True)
+
+        #Listbox
+        list_frame = tk.Frame(content, bg=colours['card'])
+        list_frame.pack(pady=SPACING['lg'],padx=SAPCING['lg'], fill="both", expand=True)
+
+        scrollbar = tk.Scrollbar(list_frame)
+        scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+
+        self.past_listbox = tk.Listbox(
+            list_frame,
+            yscrollcommand=scrollbar.set,
+            font=FONTS['body'],
+            selectbackground=colours['select_bg'],
+            selectforeground=colours['text_primary'],
+            bg=colours['surface'],
+            fg=colours['text_primary'],
+            relief="flat",
+            bd=0,
+            highlightthickness=2,
+            highlightcolor=colours['accent'],
+            highlightbackground=colours['border'],
+            selectmode=tk.MULTIPLE
         )
 
-    def load_today_goals(self):
-        colours = self.get_current_colours()
-        if not hasattr(self, 'goals_listbox'):
-            return
+        self.past_listbox,pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+        scrollbar.config=(command=self.past_listbox.yview)
 
-        self.goals_listbox.delete(0, tk.END)
-        self.index_to_text.clear()
+        #Load goals
+        past_goals = self.goal_manager.get_incomplete_last_week_goals()
+        self.past_goal_map = {}
 
-        goals = self.goal_manager.get_today_goals()
-        if not goals:
-            self.empty_label.lift()
-            return
-        else:
-            self.empty_label.lower()
+        for i, goal in enumerate(past_goals):
+            display = f"• {goal['text']}  ({goal['date']})"
+            self.past_listbox.insert(tk.END, display)
+            self.past_goal_map[i] = goal
+        
+        #Buttons
+        btn_frame = tk.Frame(content, bg=colours['card'])
+        btn_frame.pack(padx=SPACING['lg'], pady=(0, SPACING['lg'], fill="x"))
 
-        for i, g in enumerate(goals):
-            display = g.get('text')
-            self.goals_listbox.insert(tk.END, display)
-            self.index_to_text[i] = g.get('text')
+        import_container = tk.Frame(btn_frame, bg=colours['card'])
+        import_container.pack(pady=(0, SPACING['xs']))
+
+        import_btn = RoundedButton(
+            import_container,
+            "Import Selected",
+            lambda: self.import_selected_goals(overlay)
+            colours['accent'],
+            '#FFFFFF',
+            colours['accent_hover'],
+            width=240,
+            height=42,
+            parent_bg=colours['card']
+        )
+        import_btn.pack()
+
+        close_container = tk.Frame(btn_frame, bg=colours['card'])
+        close_container.pack()
+
+        close_btn = RoundedButton(
+            close_container,
+            "Close",
+            overlay.destroy,
+            colours['button_secondary'],
+            colours['text_primary'],
+            colours['hover'],
+            width=240,
+            height=38,
+            parent_bg=colours['card']
+        )
+        close_btn.pack()
+
+    def import_selected_goals(self, overlay):
+        selected = self.past_listbox.curselection()
+        imported_texts = [self.past_goal_map[i]["text"] for i in selected]
+
+        if imported_texts:
+            for g in self.goal_manager.get_incomplete_last_week_goals():
+                if g["text"] in imported_texts:
+                    self.goal_manager.add_goal(g["text"], imported_from=g["date"])
+            self.load_today_goals()
+            messagebox.showinfo("Success", f"Imported {len(imported_texts)} goal(s)!")
+
+        
+        overlay.destroy()
+
+        
+
+

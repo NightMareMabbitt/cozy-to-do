@@ -22,7 +22,7 @@ class LastWeeksGoalsDialog:
         self.overlay.transient(self.parent)
         self.overlay.grab_set()
 
-        tk.Label(self.overlay, text="Last Week's Goals", font=FONTS['medium'], bg=self.colours['bg_primary'], fg=self.colours.get('text_primary', '#000')).pack(pady=SPACING)
+        tk.Label(self.overlay, text="Last Week's Goals", font=FONTS['body'], bg=self.colours['bg_primary'], fg=self.colours.get('text_primary', '#000')).pack(pady=SPACING)
 
         frame = tk.Frame(self.overlay, bg=self.colours['bg_primary'])
         frame.pack(padx=SPACING['sm'], pady=SPACING['sm'], fill=tk.BOTH, expand=True)
