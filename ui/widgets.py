@@ -5,11 +5,22 @@ class RoundedButton(tk.Canvas):
     def __init__(self, parent, text, command, bg_color, fg_color, hover_color, **kwargs):
         width = kwargs.pop('width', 220)
         height = kwargs.pop('height', 44)
+        parent_bg = kwargs.pop('parent_bg', parent.cget('bg') if hasattr(parent, 'cget') else '#FFFFFF')
+        
+        # Set parent_bg BEFORE calling super().__init__
+        self.parent_bg = parent_bg
+        self.command = command
+        self.bg_color = bg_color
+        self.fg_color = fg_color
+        self.hover_color = hover_color
+        self.text = text
+        self.is_hovered = False
+
         super().__init__(
             parent, 
             width=width, 
             height=height, 
-            bg=parent['bg'], 
+            bg=self.parent_bg, 
             highlightthickness=0, 
             **kwargs
         )

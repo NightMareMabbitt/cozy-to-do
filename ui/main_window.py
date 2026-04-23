@@ -217,7 +217,7 @@ class ToDoApp:
 
         self.add_button.pack()
 
-        seperator = tk.Frame(self.content_card, bg=colours['border-light'], height=1)
+        seperator = tk.Frame(self.content_card, bg=colours['border_light'], height=1)
         seperator.pack(pady=(0, SPACING['md']), padx=SPACING['lg'], fill="both", expand=True)
 
         self.list_section = tk.Frame(self.content_card, bg=colours['card'])
@@ -231,10 +231,10 @@ class ToDoApp:
             bg=colours['card']
         )  
 
-        scrollbar = t.Scrollbar(self.list_section)
+        scrollbar = tk.Scrollbar(self.list_section)
         scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
 
-        self.lsistbox = tk.Listbox(
+        self.listbox = tk.Listbox(
             self.list_section,
             yscrollcommand=scrollbar.set, 
             font=FONTS['body'],
@@ -250,12 +250,12 @@ class ToDoApp:
             selectmode=tk.MULTIPLE
         )
         self.listbox.pack(side=tk.LEFT, fill="both", expand=True)
-        srollbar.config(command=slef.listbox.yview)
+        scrollbar.config(command=self.listbox.yview)
 
         self.button_section = tk.Frame(self.content_card, bg=colours['card'])
         self.button_section.pack(pady=(0, SPACING['lg']),padx=SPACING['lg'], fill="x")
 
-        complete_container = tk.Frame(self.button_sectiom, bg=colours['card'])
+        complete_container = tk.Frame(self.button_section, bg=colours['card'])
         complete_container.pack(pady=(0, SPACING['sm']))
 
         self.complete_button = RoundedButton(
@@ -274,7 +274,7 @@ class ToDoApp:
         button_seperator = tk.Frame(self.button_section, bg=colours['border_light'], height=1)
         button_seperator.pack(fill="x", pady=SPACING['md'])
 
-        import_container = tk.Frame(self.buton_section, bg=colours['card'])
+        import_container = tk.Frame(self.button_section, bg=colours['card'])
         import_container.pack(pady=(SPACING['xs'], 0))
 
         self.import_last_week_button = RoundedButton(
@@ -307,22 +307,22 @@ class ToDoApp:
         )
         self.last_week_button.pack()
 
-        self.load_today_goals()
-        self.suggest_yesterday_goals()
+        self.load_todays_goals()
+        self.suggest_yesterdays_goals()
 
 
     def update_empty_state(self):
-        if self.listboc.size() == 0:
+        if self.listbox.size() == 0:
             self.empty_label.pack(expand=True)
         else:
             self.empty_label.pack_forget()
     
 
     def load_todays_goals(self):
-        self.listbox.delete(o, tk.END)
+        self.listbox.delete(0, tk.END)
         self.index_to_text = {}
 
-        for idx, goal in enumerate(self.goal_manager.get_todays_goals()):
+        for idx, goal in enumerate(self.goal_manager.get_today_goals()):
             text = goal['text']
             if "imported_from" in goal:
                 display = f"{text}"
