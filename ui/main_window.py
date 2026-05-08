@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import messagebox
 import random
 import sys
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from config.theme import CozyTheme
 from config.fonts import FONTS
@@ -329,7 +329,7 @@ class ToDoApp:
             else:
                 display = f". {text}"
             self.listbox.insert(tk.END, display)
-            self,index_to_text[idx] = text
+            self.index_to_text[idx] = text
 
         self.update_empty_state()
     
@@ -342,7 +342,7 @@ class ToDoApp:
             try:
                 self.goal_manager.add_goal(text)
                 self.entry.delete(0, tk.END)
-                self.load_today_goals()
+                self.load_todays_goals()
 
                 #Visual feedback
                 original_colours = (self.add_button.bg_colour, self.add_button.fg_colour, self.add_button.hover_colour)
@@ -368,7 +368,7 @@ class ToDoApp:
 
         selected_texts = [self.index_to_text[i] for i in selected if i in self.index_to_text]
         self.goal_manager.mark_goals_complete(selected_texts)
-        self.load_today_goals()
+        self.load_todays_goals()
 
         original_text = self.complete_button.text
         self.complete_button.text = "Completed!"
@@ -407,7 +407,7 @@ class ToDoApp:
             messagebox.showinfo("Imported", f"Imported {len(imported)} goals from last week!")
         else:
             messagebox.showinfo("All caught up", "No incomplete goals from last week to import!")
-        self.load_today_goals()
+        self.load_todays_goals()
     
     def show_last_week_overlay(self):
         colours = self.get_current_colours()
@@ -442,7 +442,7 @@ class ToDoApp:
 
         #Listbox
         list_frame = tk.Frame(content, bg=colours['card'])
-        list_frame.pack(pady=SPACING['lg'],padx=SAPCING['lg'], fill="both", expand=True)
+        list_frame.pack(pady=SPACING['lg'],padx=SPACING['lg'], fill="both", expand=True)
 
         scrollbar = tk.Scrollbar(list_frame)
         scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
@@ -463,7 +463,7 @@ class ToDoApp:
             selectmode=tk.MULTIPLE
         )
 
-        self.past_listbox,pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+        self.past_listbox.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
         scrollbar.config(command=self.past_listbox.yview)
 
         #Load goals

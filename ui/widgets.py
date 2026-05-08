@@ -69,10 +69,11 @@ class RoundedButton(tk.Canvas):
         self.draw_button()
         self.configure(cursor="")
 
-    def update_colors(self, bg_color, fg_color, hover_color):
+    def update_colors(self, bg_color, fg_color, hover_color, card_color):
         self.bg_color = bg_color
         self.fg_color = fg_color
         self.hover_color = hover_color
+        self.card_color = card_color
         self.draw_button()
 
 class EmptyStateLabel(tk.Label):
