@@ -30,6 +30,7 @@ class CozyTheme:
         'accent_hover': '#CBA66F',
         'text_primary': '#F5F1EB',
         'text_secondary': '#D2B48C',
+        'text_muted': "#F3E6CD",
         'success': '#8FAA6F',
         'success_hover': '#6F8F57',
         'border': '#4A3F35',

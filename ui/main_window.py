@@ -19,7 +19,7 @@ class ToDoApp:
         self.root = root
         self.root.title("Cozy To-Do App 🌿")
         self.root.geometry("600x750")
-        self.root.minsize(500, 650)
+        self.root.minsize(600, 750)
 
         setup_dpi_awareness()
 
