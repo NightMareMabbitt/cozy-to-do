@@ -20,7 +20,7 @@ class GoalsListSection:
   def create_widgets(self):
     #Create list widgets
     self.section = tk.Frame(self.parent, bg=self.colours['card'])
-    self.section.pack(pady=(0, SPACING['mg']), padx=SPACING['lg'], fill='both', expand=True)
+    self.section.pack(pady=(0, SPACING['md']), padx=SPACING['lg'], fill=tk.BOTH, expand=True)
 
     #Empty State Label
     self.empty_label = tk.Label(
@@ -52,28 +52,27 @@ class GoalsListSection:
       selectmode=tk.MULTIPLE
     )
 
-    self.listbox.pack(side=tk.LEFT, fill="both, expand=True")
+    self.listbox.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
     scrollbar.config(command=self.listbox.yview)
 
-    def update_empty_state(self):
+  def update_empty_state(self):
       #Show/hide empty state based on listbox content
       if self.listbox.size() == 0:
         self.empty_label.pack(expand=True)
       else:
         self.empty_label.pack_forget()
     
-    def clear(self):
+  def clear(self):
       self.listbox.delete(0, tk.END)
 
-    
-    def add_item(self, text):
+  def add_item(self, text):
       self.listbox.insert(tk.END, text)
 
-    def get_selection(self):
+  def get_selection(self):
       #Get selected indices
       return self.listbox.curselection()
 
-    def update_theme(self, colours):
+  def update_theme(self, colours):
       self.colours = colours
 
       self.section.configure(bg=colours['card'])

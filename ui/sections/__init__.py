@@ -1,6 +1,6 @@
 from .header import HeaderSection
 from .input import InputSection
-from .goals import GoalsListSection
+from .goals_list import GoalsListSection
 from .actions import ActionsSection
 
 
