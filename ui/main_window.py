@@ -344,16 +344,20 @@ class ToDoApp:
                 self.entry.delete(0, tk.END)
                 self.load_todays_goals()
 
-                #Visual feedback
-                original_colours = (self.add_button.bg_colour, self.add_button.fg_colour, self.add_button.hover_colour)
+                # Visual feedback
+                original_colours = (
+                    self.add_button.bg_color,
+                    self.add_button.fg_color,
+                    self.add_button.hover_color,
+                )
                 success_colour = self.get_current_colours()['success']
-                self.add_button.update_colours(success_colour, '#FFFFFF', success_colour)
+                self.add_button.update_colors(success_colour, '#FFFFFF', success_colour, self.get_current_colours()['card'])
                 self.add_button.text = "Added!"
                 self.add_button.draw_button()
 
                 def reset():
                     self.add_button.text = "Add Goal"
-                    self.add_button.update_colours(*original_colours)
+                    self.add_button.update_colors(*original_colours, self.get_current_colours()['card'])
                 
                 self.root.after(1000, reset)
             
@@ -396,7 +400,7 @@ class ToDoApp:
 
                 if messagebox.askyesno("Yesterday's Goals", msg):
                     imported = self.goal_manager.get_incomplete_yesterday_goals()
-                    self.load_today_goals()
+                    self.load_todays_goals()
                 
         except Exception as e:
             pass
@@ -519,7 +523,7 @@ class ToDoApp:
             for g in self.goal_manager.get_incomplete_last_week_goals():
                 if g["text"] in imported_texts:
                     self.goal_manager.add_goal(g["text"], imported_from=g["date"])
-            self.load_today_goals()
+            self.load_todays_goals()
             messagebox.showinfo("Success", f"Imported {len(imported_texts)} goal(s)!")
 
         

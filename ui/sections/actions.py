@@ -29,7 +29,7 @@ class ActionsSection:
     self.complete_btn = RoundedButton(
       complete_container,
       "Complete Selected",
-      command=self.complete_callback,
+      self.complete_callback,
       self.colours['success'],
       '#FFFFFF',
       self.colours['success_hover'],
@@ -39,7 +39,7 @@ class ActionsSection:
     )
     self.complete_btn.pack()
 
-    separator = tk.Frame(self.section, bg=self.colours['border_light', height=1])
+    separator = tk.Frame(self.section, bg=self.colours['border_light'], height=1)
     separator.pack(fill='x', pady=SPACING['md'])
 
     import_container = tk.Frame(self.section, bg=self.colours['card'])
@@ -72,28 +72,29 @@ class ActionsSection:
       height=38,
       parent_bg=self.colours['card']
     )
-    slef.view_btn.pack()
+    self.view_btn.pack()
 
   def update_theme(self, colours):
     self.colours = colours
 
     self.section.configure(bg=colours['card'])
-    self.complete_btn.update_theme(
+    self.complete_btn.update_colors(
       colours['success'],
       '#FFFFFF',
-      colours['success_hover']
-    )
-    
-    self.import_btn.update_theme(
-      colours['button_secondary'],
-      colours['text_primary'],
-      colours['hover']
+      colours['success_hover'],
       colours['card']
     )
 
-    self.view_btn.update_theme(
+    self.import_btn.update_colors(
       colours['button_secondary'],
       colours['text_primary'],
-      colours['hover']
+      colours['hover'],
+      colours['card']
+    )
+
+    self.view_btn.update_colors(
+      colours['button_secondary'],
+      colours['text_primary'],
+      colours['hover'],
       colours['card']
     )

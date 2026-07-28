@@ -5,20 +5,20 @@ from config.constants import SPACING
 from ui.widgets import RoundedButton
 
 class InputSection:
-   #Input section with entry field and add button
+  #Input section with entry field and add button
 
-   def __init__(self, parent, colours, add_callback, return_callback):
-      self.parent = parent
-      self.colours = colours
-      self.add_callback = add_callback
-      self.return_callback = return_callback
+  def __init__(self, parent, colours, add_callback, return_callback):
+   self.parent = parent
+   self.colours = colours
+   self.add_callback = add_callback
+   self.return_callback = return_callback
 
-      self.section = None
-      self.entry = None
-      self.add_button = None
+   self.section = None
+   self.entry = None
+   self.add_button = None
 
-      self.create_widgets()
-  
+   self.create_widgets()
+
   def create_widgets(self):
     #Create input widgets
     self.section = tk.Frame(self.parent, bg=self.colours['card'])
@@ -31,9 +31,9 @@ class InputSection:
       fg=self.colours['text_primary'],
       insertbackground=self.colours['accent'],
       bd=0,
-      relief='flat'
+      relief='flat',
       highlightthickness=2,
-      highlightcolour=self.colours['accent'],
+      highlightcolor=self.colours['accent'],
       highlightbackground=self.colours['border']
     )
     self.entry.pack(fill='x', ipady=12)
@@ -46,8 +46,8 @@ class InputSection:
     
     self.add_button = RoundedButton(
       add_btn_container,
-      text="✨Add Goal",
-      command=self.add_callback,
+      "✨Add Goal",
+      self.add_callback,
       self.colours['accent'],
       '#FFFFFF',
       self.colours['accent_hover'],
@@ -66,7 +66,6 @@ class InputSection:
     self.entry.delete(0, tk.END)
 
   def update_theme(self, colours):
-
     self.colours = colours
 
     self.section.configure(bg=colours['card'])
@@ -74,10 +73,10 @@ class InputSection:
       bg=colours['surface'],
       fg=colours['text_primary'],
       insertbackground=colours['accent'],
-      highlightbackground=colours['border'], 
-      highlightcolour=colours['accent']
+      highlightbackground=colours['border'],
+      highlightcolor=colours['accent']
     )
-    self.add_button.update_colours(
+    self.add_button.update_colors(
       colours['accent'],
       '#FFFFFF',
       colours['accent_hover'],
