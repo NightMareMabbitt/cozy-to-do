@@ -18,7 +18,8 @@ class CozyTheme:
         'button_primary': '#D4A574',
         'button_secondary': '#C8B99C',
         'select_bg': '#D3E4CD',
-        'shadow': '#00000008'
+        'shadow': '#00000008',
+        'image_placeholder': '#E8DFD4'
         }
 
         self.dark = {
@@ -39,5 +40,16 @@ class CozyTheme:
         'button_primary': '#B8956F',
         'button_secondary': '#9A8269',
         'select_bg': '#4A5D47',
-        'shadow': '#00000020'
+        'shadow': '#00000020',
+        'image_placeholder': '#3D362F'
         }
+        #Default to light mode
+        self.dark_mode = False
+        self.colors = self.light
+
+    def set_mode(self, dark_mode):
+        self.dark_mode = dark_mode
+        self.colors = self.dark if dark_mode else self.light
+
+    def get(self, key, default=None):
+        return self.colors.get(key, default)

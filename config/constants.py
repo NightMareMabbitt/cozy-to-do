@@ -17,4 +17,23 @@ SPACING = {
     'md': 16,
     'lg': 24,
     'xl': 32,
+    'xxl': 48,
+}
+
+#Timer durations in miunutes
+TIMER_DURATIONS = [25, 15, 5]
+
+SOUNDS = [
+   {"id": "rainy", "icon": "🌧️", "title": "Rainy Day", "subtitle": "Gentle rain sounds"},
+    {"id": "coffee", "icon": "☕", "title": "Coffee Shop", "subtitle": "Ambient cafe noise"},
+    {"id": "forest", "icon": "🌲", "title": "Forest Breeze", "subtitle": "Nature sounds"},
+    {"id": "ocean", "icon": "🌊", "title": "Ocean Waves", "subtitle": "Calming waves"},
+    {"id": "jazz", "icon": "🎺", "title": "Night Jazz", "subtitle": "Soft jazz music"},
+    {"id": "white", "icon": "〰️", "title": "White Noise", "subtitle": "Pure focus"},
+]
+
+RADIUS = {
+  'card': 24,
+  'button': 12,
+  'small': 8,
 }

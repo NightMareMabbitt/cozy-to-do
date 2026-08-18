@@ -34,7 +34,7 @@ class LastWeeksGoalsDialog:
             frame, 
             yscrollcommand=scrollbar.set,
             width=40,
-            font=("Helvetica", 12),
+            font=("Segoe UI", 12),
             selectbackground="#d3e4cd",
             selectforeground="#000",
             bg="#ffffff",
